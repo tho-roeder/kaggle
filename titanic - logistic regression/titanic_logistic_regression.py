@@ -8,7 +8,7 @@ Created on Sun Feb  7 15:10:04 2021
 import pandas as pd
 import os
 
-df=pd.read_csv(os.getcwd()+"\\Desktop\\VM share\\Python\\Kaggle\\titanic"+"\\train.csv")
+df=pd.read_csv(os.getcwd()+"\\Desktop\\VM share\\Python\\Kaggle\\titanic - logistic regression"+"\\train.csv")
 
 train_me=df[['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']]
 lable_me=df['Survived']
