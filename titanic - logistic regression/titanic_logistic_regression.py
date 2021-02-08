@@ -4,6 +4,7 @@ Created on Sun Feb  7 15:10:04 2021
 
 @author: thoma
 """
+# try normalization and standardization
 
 import pandas as pd
 import os
