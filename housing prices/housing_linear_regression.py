@@ -6,7 +6,7 @@ This is a temporary script file.
 """
 # tod do: treatment of missing values
 
-path="\\Desktop\\VM share\\Python\\Kaggle\\housing prices"
+path="\\Desktop\\VM share\\Python\\files\\Kaggle\\housing prices"
 
 import pandas as pd
 import os

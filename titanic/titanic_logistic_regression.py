@@ -6,7 +6,7 @@ Created on Sun Feb  7 15:10:04 2021
 """
 # to do: normalization and standardization
 
-path="\\Desktop\\VM share\\Python\\Kaggle\\titanic"
+path="\\Desktop\\VM share\\Python\\files\\Kaggle\\titanic"
 
 import pandas as pd
 import os
