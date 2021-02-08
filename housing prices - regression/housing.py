@@ -20,6 +20,7 @@ dependent=df[all_columns[-1:]]
 # check input data
 detect_na=df.isna().any()
 issue=detect_na[detect_na == True].index
+issue_cnt=df.isnull().sum()
 
 for i in issue:
     print(df[i].value_counts())
@@ -32,6 +33,8 @@ print(df.dtypes)
 # independent_miss=independent.fillna('missing')
 # independent_dum=pd.get_dummies(independent_miss)
 # independent_treated=independent_dum
+
+
 
 # split test train data
 from sklearn.model_selection import train_test_split
