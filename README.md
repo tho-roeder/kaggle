@@ -6,4 +6,4 @@
 
 3) safe driver: https://www.kaggle.com/c/porto-seguro-safe-driver-prediction/
 
-next 4) home credit default risk: https://www.kaggle.com/c/home-credit-default-risk/data
+4) next: home credit default risk: https://www.kaggle.com/c/home-credit-default-risk/data
