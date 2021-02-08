@@ -4,12 +4,14 @@ Created on Sun Feb  7 15:10:04 2021
 
 @author: thoma
 """
-# try normalization and standardization
+# to do: normalization and standardization
+
+path="\\Desktop\\VM share\\Python\\Kaggle\\titanic"
 
 import pandas as pd
 import os
 
-df=pd.read_csv(os.getcwd()+"\\Desktop\\VM share\\Python\\Kaggle\\titanic - logistic regression"+"\\train.csv")
+df=pd.read_csv(os.getcwd()+path+"\\train.csv")
 
 train_me=df[['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']]
 lable_me=df['Survived']
@@ -29,7 +31,7 @@ log.fit(X_train, Y_train)
 from sklearn.metrics import classification_report
 print(classification_report(Y_test, log.predict(X_test)))
 
-df=pd.read_csv(os.getcwd()+"\\Desktop\\VM share\\Python\\Kaggle\\titanic"+"\\test.csv")
+df=pd.read_csv(os.getcwd()+path+"\\test.csv")
 
 train_me=df[['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']]
 
@@ -40,12 +42,12 @@ train_me=pd.get_dummies(train_me)
 df['Survived']= log.predict(train_me)
 
 out=df[['PassengerId', 'Survived']]
-out.to_csv(path_or_buf=os.getcwd()+"\\Desktop\\VM share\\Python\\Kaggle\\titanic"+"\\result.csv",index=False)
+out.to_csv(path_or_buf=os.getcwd()+path+"\\result.csv",index=False)
 
 
 ################################
 
-df=pd.read_csv(os.getcwd()+"\\Desktop\\VM share\\Python\\Kaggle\\titanic"+"\\train.csv")
+df=pd.read_csv(os.getcwd()+path+"\\train.csv")
 
 print(train_me.isna().any())
 
