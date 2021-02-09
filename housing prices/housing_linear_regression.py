@@ -73,3 +73,54 @@ df['SalePrice']= reg.predict(test_independent_dum)
 out=df[['Id', 'SalePrice']]
 out.to_csv(path_or_buf=os.getcwd()+path+"\\result.csv",index=False)
 
+
+
+# print(regr.coef_)
+# print(regr.intercept_)
+
+# predict=model.predict(X)
+
+# plt.scatter(X, y, alpha=0.4)
+# # Plot line here:
+# plt.plot(X,predict)
+
+# plt.title("Boston Housing Dataset")
+# plt.xlabel("Nitric Oxides Concentration")
+# plt.ylabel("House Price ($)")
+# plt.show()
+
+
+# y_predict= lm.predict(x_test)
+
+# print("Train score:")
+# print(lm.score(x_train, y_train))
+
+# print("Test score:")
+# print(lm.score(x_test, y_test))
+
+# plt.scatter(y_test, y_predict)
+# plt.plot(range(20000), range(20000))
+
+
+# features_to_remove = ['address','attributes','business_id','categories','city','hours','is_open','latitude','longitude','name','neighborhood','postal_code','state','time']
+# df.drop(labels=features_to_remove, axis=1, inplace=True)
+
+
+# df.isna().any()
+
+# df.fillna({'weekday_checkins':0,
+#            'weekend_checkins':0,
+#            'average_tip_length':0,
+#            'number_tips':0,
+#            'average_caption_length':0,
+#            'number_pics':0},
+#           inplace=True)
+
+# df.corr()
+
+# sorted(list(zip(['average_review_length','average_review_age'],model.coef_)),key = lambda x: abs(x[1]),reverse=True)
+
+# pd.DataFrame(list(zip(features.columns,features.describe().loc['mean'],features.describe().loc['min'],features.describe().loc['max'])),columns=['Feature','Mean','Min','Max'])
+
+
+#https://www.kaggle.com/faressayah/linear-regression-house-price-prediction
