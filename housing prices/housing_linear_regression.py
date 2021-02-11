@@ -6,20 +6,27 @@ This is a temporary script file.
 """
 # to do: 
 # treatment of missing values
+# transform to categorical values
 # https://www.kaggle.com/faressayah/linear-regression-house-price-prediction
 # https://www.kaggle.com/sudhirnl7/linear-regression-tutorial
+
 
 #path="\\Desktop\\VM share\\Python\\files\\Kaggle\\housing prices"
 full_path="C:\\Users\\thoma\\Desktop\\VM share\\Python\\files\\Kaggle\\housing prices"
 import pandas as pd
 import numpy as np
 import os
+import matplotlib.pyplot as plt
 
 # source data
 #df=pd.read_csv(os.getcwd()+path+"\\train.csv", index_col='Id')
 
 df=pd.read_csv(full_path+"\\train.csv", index_col='Id')
 
+model_corr=df.corr()
+high_corr=model_corr[abs(model_corr['SalePrice'])>0.1]
+new_columns=high_corr.index
+#independent=df[new_columns].drop(columns='SalePrice')
 
 # select variables:    
 all_columns=df.columns
@@ -33,8 +40,26 @@ issue_cnt=independent.isnull().sum()
 issue=issue_cnt[issue_cnt >= 0].index
 no_issue=issue_cnt[issue_cnt == 0].index
 
+
+# df.fillna({'weekday_checkins':0,
+#            'weekend_checkins':0,
+#            'average_tip_length':0,
+#            'number_tips':0,
+#            'average_caption_length':0,
+#            'number_pics':0},
+#           inplace=True)
+
+
+
+
 for i in issue:
     print(df[i].value_counts())
+    if df[i].dtypes != 'object':
+        plt.hist(df[i])
+        plt.title(i)
+        plt.show()
+        plt.clf()
+
 
 print(df.info)
 print(type(df))
@@ -58,7 +83,7 @@ reg=LinearRegression()
 reg.fit(X_train,Y_train)
 
 model_param= list(zip(np.array(all_columns[:-1]),reg.coef_[0]))
-model_corr=independent.corr()
+independent_corr=independent.corr()
 
 # assessing result
 from sklearn.metrics import mean_squared_error, r2_score
@@ -90,10 +115,9 @@ final_df['diff']=final_df['predict']-final_df['SalePrice']
 #print(classification_report(Y_test, reg.predict(X_test)))
 
 # visual 
-import matplotlib.pyplot as plt
-plt.scatter(final_df['predict'],final_df['SalePrice'])
-plt.show()
-plt.clf()
+# plt.scatter(final_df['predict'],final_df['SalePrice'])
+# plt.show()
+# plt.clf()
 
 # # apply model to validation
 # #df=pd.read_csv(os.getcwd()+path+"\\test.csv")
@@ -116,19 +140,7 @@ plt.clf()
 
 # other things
 # features_to_remove = ['address','attributes','business_id','categories','city','hours','is_open','latitude','longitude','name','neighborhood','postal_code','state','time']
-# df.drop(labels=features_to_remove, axis=1, inplace=True)
-
-
-# df.isna().any()
-
-# df.fillna({'weekday_checkins':0,
-#            'weekend_checkins':0,
-#            'average_tip_length':0,
-#            'number_tips':0,
-#            'average_caption_length':0,
-#            'number_pics':0},
-#           inplace=True)
-
+# df.drop(labels=features_to_remove, axis=1, inplace=True)()
 
 # sorted(list(zip(['average_review_length','average_review_age'],model.coef_)),key = lambda x: abs(x[1]),reverse=True)
 
