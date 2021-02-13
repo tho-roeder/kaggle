@@ -55,18 +55,18 @@ plt.show()
 from sklearn.metrics import mean_squared_error, r2_score
 
 #Train
-print('Mean squared error: %.2f'
+print('Mean squared error Train: %.2f'
       % mean_squared_error(Y_train, model.predict(X_train)))
 # The coefficient of determination: 1 is perfect prediction
-print('Coefficient of determination: %.2f'
+print('Coefficient of determination R2 Train: %.2f'
       % r2_score(Y_train, model.predict(X_train)))
 
 
 #Test
-print('Mean squared error: %.2f'
+print('Mean squared error Test: %.2f'
       % mean_squared_error(Y_test, model.predict(X_test, predict_disable_shape_check=True)))
 # The coefficient of determination: 1 is perfect prediction
-print('Coefficient of determination: %.2f'
+print('Coefficient of determination R2 Test: %.2f'
       % r2_score(Y_test, model.predict(X_test, predict_disable_shape_check=True)))
 
 
@@ -78,5 +78,8 @@ test_independent_dum=pd.get_dummies(test_df)
 test_df['SalePrice']= model.predict(test_independent_dum, predict_disable_shape_check=True)
 out=test_df['SalePrice']
 out.to_csv(path_or_buf=full_path+"\\result.csv",index=True)
+
+
+
 
 

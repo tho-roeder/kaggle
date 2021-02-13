@@ -147,3 +147,10 @@ final_df['diff']=final_df['predict']-final_df['SalePrice']
 # pd.DataFrame(list(zip(features.columns,features.describe().loc['mean'],features.describe().loc['min'],features.describe().loc['max'])),columns=['Feature','Mean','Min','Max'])
 
 
+
+# var_list = ["CreditScore","Age","Tenure","Balance","NumOfProducts","EstimatedSalary","Exited"]
+# sns.heatmap(churn_data[var_list].corr(), annot = True)
+# plt.title("Correlation Matrix")
+# plt.tight_layout()
+# plt.show()
+# plt.clf()
