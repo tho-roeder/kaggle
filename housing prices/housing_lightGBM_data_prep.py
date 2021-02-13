@@ -87,22 +87,16 @@ def low_corr(df,target,min_cor):
 def same_value(df,var,max_perc_rep):
     drop_list_max_perc_rep=[]
     for i in var:
-        if (df[i].value_counts().any()/len(df[i]))>=max_perc_rep:
+        if (df[i].value_counts().max()/len(df[i]))>=max_perc_rep:
             drop_list_max_perc_rep.append(i)
     return drop_list_max_perc_rep
 
-
-#temp=df['MiscFeature'].value_counts()/len(df['MiscFeature'])
-#drop_list_max_perc_rep=same_value(df,var=all_var,max_perc_rep=0.55)
-#here
 
 def treat_str_var(df,var):
     from sklearn.preprocessing import LabelEncoder # Converts cat data to numeric
     le=LabelEncoder()
     for i in var:
         df[i]=le.fit_transform(df[i])
-
-
 
 
 def train_lightGBM(independent,dependent):
@@ -165,7 +159,6 @@ def train_lightGBM(independent,dependent):
     return model
 
 
-
 def create_output(model,drop_list,apply_trans):
     import pandas as pd
     #output
@@ -189,26 +182,27 @@ def create_output(model,drop_list,apply_trans):
     return test_df
 
 
-
 full_path="C:\\Users\\thoma\\Desktop\\VM share\\Python\\files\\Kaggle\\housing prices"
 df=import_file(full_path)
 # print(len(df.columns))
 # print(df.iloc[:,1])
-#df=df[df['SalePrice']<=290000]
+# df=df[df['SalePrice']<=290000]
 
 all_var, num_var_nan, num_var_nonan, str_var_nan, str_var_nonan= pre_work(df)   
 
-plot_num_var(df,num_var_nan)
-plot_str_var(df,str_var_nan)
+# plot_num_var(df,num_var_nan)
+# plot_str_var(df,str_var_nan)
 
 drop_list_num=impute_var(df=df,var=num_var_nan,perc_drop=0.20,style='nan')
 drop_list_str=impute_var(df=df,var=str_var_nan,perc_drop=1,style='nan')
 #plot_num_var(df,num_var_nan)      
 #plot_str_var(df,str_var_nan)
 
-drop_list_lowCor=low_corr(df,target='SalePrice',min_cor=0.1)
+drop_list_lowCor=low_corr(df,target='SalePrice',min_cor=0.05)
+drop_list_max_perc_rep=same_value(df,var=all_var,max_perc_rep=0.95)
 
-drop_list=drop_list_num+drop_list_str+drop_list_lowCor
+drop_list=(drop_list_num+drop_list_str+drop_list_lowCor+drop_list_max_perc_rep)
+#drop_list=drop_list.unique()
 #str_list=str_var_nonan+str_var_nan
 #treat_str_var(df,str_list)
 

@@ -6,12 +6,11 @@ Created on Sun Feb  7 15:10:04 2021
 """
 # to do: normalization and standardization
 
-path="\\Desktop\\VM share\\Python\\files\\Kaggle\\titanic"
+full_path="C:\\Users\\thoma\\Desktop\\VM share\\Python\\files\\Kaggle\\titanic"
 
 import pandas as pd
-import os
 
-df=pd.read_csv(os.getcwd()+path+"\\train.csv")
+df=pd.read_csv(full_path+"\\train.csv")
 
 train_me=df[['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']]
 lable_me=df['Survived']
@@ -31,7 +30,21 @@ log.fit(X_train, Y_train)
 from sklearn.metrics import classification_report
 print(classification_report(Y_test, log.predict(X_test)))
 
-df=pd.read_csv(os.getcwd()+path+"\\test.csv")
+from sklearn.metrics import mean_squared_error, r2_score
+print('Mean squared error Train: %.2f'
+      % mean_squared_error(Y_train, log.predict(X_train)))
+# The coefficient of determination: 1 is perfect prediction
+print('Coefficient of determination R2 Train: %.2f'
+      % r2_score(Y_train, log.predict(X_train)))
+
+#Test
+print('Mean squared error Test: %.2f'
+      % mean_squared_error(Y_test, log.predict(X_test)))
+# The coefficient of determination: 1 is perfect prediction
+print('Coefficient of determination R2 Test: %.2f'
+      % r2_score(Y_test, log.predict(X_test)))
+
+df=pd.read_csv(full_path+"\\test.csv")
 
 train_me=df[['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']]
 
@@ -42,12 +55,12 @@ train_me=pd.get_dummies(train_me)
 df['Survived']= log.predict(train_me)
 
 out=df[['PassengerId', 'Survived']]
-out.to_csv(path_or_buf=os.getcwd()+path+"\\result.csv",index=False)
+out.to_csv(path_or_buf=full_path+"\\result.csv",index=False)
 
 
 ################################
 
-df=pd.read_csv(os.getcwd()+path+"\\train.csv")
+df=pd.read_csv(full_path+"\\train.csv")
 
 print(train_me.isna().any())
 
@@ -105,5 +118,5 @@ for i in plot_me:
 
 
 
-final_results=predict_class(hours_studied, calculated_coefficients, intercept, 0.5)
-print(final_results)
+# final_results=predict_class(hours_studied, calculated_coefficients, intercept, 0.5)
+# print(final_results)
