@@ -15,6 +15,7 @@ def import_file(full_path):
 full_path="C:\\Users\\thoma\\Desktop\\VM share\\Python\\files\\Kaggle\\titanic"
 df=import_file(full_path)
 
+#create new variables:
 df['Cabin_new']=df['Cabin'].str[0:1]
 plot_str_var(df,['Cabin_new'])
 

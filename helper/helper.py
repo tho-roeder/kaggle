@@ -51,29 +51,67 @@ def plot_str_var(df,var):
             plt.clf()
 
 
-def impute_var(df,var,perc_drop,style):
+# def impute_var(df,var,perc_drop,style):
+#     import numpy as np
+#     var_drop=[]
+#     for i in var:
+#         if df[i].isna().sum()/len(df[i])>=perc_drop:
+#             var_drop.append(i)
+#         else:
+#             if df[i].dtypes != 'object':
+#                 if style == 'mean':
+#                     df[i].fillna(value=df[i].mean(),inplace=True)
+#                 if style == 'median':
+#                     df[i].fillna(value=df[i].median(),inplace=True)
+#                 if style == 'nan':
+#                     df[i].fillna(value=np.nan,inplace=True)
+#             if df[i].dtypes == 'object':
+#                 if style == 'nan':
+#                     df[i].fillna(value='missing',inplace=True)
+#             if style == 'mode':
+#                 df[i].fillna(value=df[i].mode(dropna=True).values[0],inplace=True)
+#     return var_drop
+
+
+def impute_var_v2(df,var,perc_drop,style):
     import numpy as np
-    var_drop=[]
+    lst_var_drop=[]
+    lst_impute=[]
     for i in var:
         if df[i].isna().sum()/len(df[i])>=perc_drop:
-            var_drop.append(i)
+            lst_var_drop.append(i)
         else:
             if df[i].dtypes != 'object':
                 if style == 'mean':
-                    df[i].fillna(value=df[i].mean(),inplace=True)
+                    impute_value=df[i].mean()
+                    df[i].fillna(value=impute_value,inplace=True)
                 if style == 'median':
-                    df[i].fillna(value=df[i].median(),inplace=True)
+                    impute_value=df[i].median()
+                    df[i].fillna(value=impute_value,inplace=True)
                 if style == 'nan':
-                    df[i].fillna(value=np.nan,inplace=True)
+                    impute_value=np.nan
+                    df[i].fillna(value=impute_value,inplace=True)
             if df[i].dtypes == 'object':
                 if style == 'nan':
-                    df[i].fillna(value='missing',inplace=True)
+                    impute_value='missing'
+                    df[i].fillna(value=impute_value,inplace=True)
             if style == 'mode':
-                df[i].fillna(value=df[i].mode(dropna=True).values[0],inplace=True)
-    return var_drop
+                impute_value=df[i].mode(dropna=True).values[0]
+                df[i].fillna(value=impute_value,inplace=True)
+            lst_impute.append([i,impute_value])
+    return lst_var_drop,lst_impute
 
 
 def low_corr(df,target,min_cor):
+    cor=df.corr()
+    drop_list_lowCor=cor[abs(cor[target])<=min_cor]
+    return list(drop_list_lowCor.index)
+
+
+def merge_low_corr(df_ind,df_dep,target,min_cor):
+    import pandas as pd
+    df=pd.merge(left=df_ind,right=df_dep,how="inner",left_index=True,
+    right_index=True)
     cor=df.corr()
     drop_list_lowCor=cor[abs(cor[target])<=min_cor]
     return list(drop_list_lowCor.index)
@@ -87,8 +125,21 @@ def same_value(df,var,max_perc_rep):
     return drop_list_max_perc_rep
 
 
-def treat_str_var(df,var):
-    from sklearn.preprocessing import LabelEncoder # Converts cat data to numeric
-    le=LabelEncoder()
-    for i in var:
-        df[i]=le.fit_transform(df[i])
+def Standardize_values(df):
+    from sklearn.preprocessing import StandardScaler
+    SC = StandardScaler(with_mean=False)
+    SC.fit(df)
+    return SC
+
+def Normalize_values(df):
+    from sklearn.preprocessing import Normalizer
+    transformer = Normalizer().fit(df)
+    transformer.fit(df)
+    return transformer
+
+
+# def treat_str_var(df,var):
+#     from sklearn.preprocessing import LabelEncoder # Converts cat data to numeric
+#     le=LabelEncoder()
+#     for i in var:
+#         df[i]=le.fit_transform(df[i])

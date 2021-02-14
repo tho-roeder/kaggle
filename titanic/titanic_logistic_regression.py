@@ -70,24 +70,17 @@ for i in plot_me:
     plt.show()
     plt.clf()
 
-#convert: 'Cabin'
-# print(df['Cabin'])
-# print(df['Cabin'].value_counts())
-# check=df['Cabin'].dropna()
-# check[:1]
-#check=df['Cabin'].fillna('Missing')
-
+# save coeff
 # calculated_coefficients = model.coef_ 
 # intercept = model.intercept_
 
 # print(calculated_coefficients )
 # print(intercept )
+#model_param= list(zip(np.array(all_columns[:-1]),reg.coef_[0]))
 
 # Assign and update coefficients
 # coefficients=model_2.coef_
 # coefficients=coefficients.tolist()[0]
-
-# stepwise regression/logistic regression
 
 
 

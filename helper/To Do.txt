@@ -1,6 +1,11 @@
-1) variable transformation separate for train/test/validation - is it leakage?
-2) build  helper function for normalization and standardization
-3) done: treatment of missing values
-4) transform to categorical values
-5) check solutions: https://www.kaggle.com/faressayah/linear-regression-house-price-prediction, https://www.kaggle.com/sudhirnl7/linear-regression-tutorial
-6) try grid search in light gbm
+01) variable transformation separate for train/test/validation - is it leakage?
+02) build  helper function for normalization and standardization
+03) done: treatment of missing values
+04) transform to categorical values
+05) check solutions: https://www.kaggle.com/faressayah/linear-regression-house-price-prediction, https://www.kaggle.com/sudhirnl7/linear-regression-tutorial
+06) try grid search in light gbm
+07) stepwise regression/logistic regression
+08) apply_transformation def
+09) same variables in test/val else drop or impute
+10) improve one hot encoding
+11) import files properly
