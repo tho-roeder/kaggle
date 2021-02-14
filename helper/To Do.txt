@@ -1,0 +1,6 @@
+1) variable transformation separate for train/test/validation - is it leakage?
+2) build  helper function for normalization and standardization
+3) done: treatment of missing values
+4) transform to categorical values
+5) check solutions: https://www.kaggle.com/faressayah/linear-regression-house-price-prediction, https://www.kaggle.com/sudhirnl7/linear-regression-tutorial
+6) try grid search in light gbm

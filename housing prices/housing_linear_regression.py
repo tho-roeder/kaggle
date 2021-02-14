@@ -1,25 +1,9 @@
 # -*- coding: utf-8 -*-
-"""
-Spyder Editor
 
-This is a temporary script file.
-"""
-# to do: 
-# treatment of missing values
-# transform to categorical values
-# https://www.kaggle.com/faressayah/linear-regression-house-price-prediction
-# https://www.kaggle.com/sudhirnl7/linear-regression-tutorial
-
-
-#path="\\Desktop\\VM share\\Python\\files\\Kaggle\\housing prices"
 full_path="C:\\Users\\thoma\\Desktop\\VM share\\Python\\files\\Kaggle\\housing prices"
 import pandas as pd
 import numpy as np
-import os
 import matplotlib.pyplot as plt
-
-# source data
-#df=pd.read_csv(os.getcwd()+path+"\\train.csv", index_col='Id')
 
 df=pd.read_csv(full_path+"\\train.csv", index_col='Id')
 

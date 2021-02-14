@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sun Feb  7 15:10:04 2021
-
-@author: thoma
-"""
-# to do: normalization and standardization
 
 full_path="C:\\Users\\thoma\\Desktop\\VM share\\Python\\files\\Kaggle\\titanic"
 

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Feb 13 21:07:29 2021
 
-@author: thoma
-"""
-
+# import os
+# path="C:\\Users\\thoma\\Desktop\\VM share\\Python\\Kaggle\\helper"
+# os.chdir(path)
+# print(os.getcwd())
+# %run helper.py
 
 def pre_work(df):
     num_var_nan=list()
