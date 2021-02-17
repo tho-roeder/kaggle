@@ -73,10 +73,40 @@ def plot_str_var(df,var):
 #     return var_drop
 
 
-def impute_var_v2(df,var,perc_drop,style):
+# def impute_var_v2(df,var,perc_drop,style):
+#     import numpy as np
+#     lst_var_drop=[]
+#     lst_impute=[]
+#     for i in var:
+#         if df[i].isna().sum()/len(df[i])>=perc_drop:
+#             lst_var_drop.append(i)
+#         else:
+#             if df[i].dtypes != 'object':
+#                 if style == 'mean':
+#                     impute_value=df[i].mean()
+#                     df[i].fillna(value=impute_value,inplace=True)
+#                 if style == 'median':
+#                     impute_value=df[i].median()
+#                     df[i].fillna(value=impute_value,inplace=True)
+#                 if style == 'nan':
+#                     impute_value=np.nan
+#                     df[i].fillna(value=impute_value,inplace=True)
+#             if df[i].dtypes == 'object':
+#                 if style == 'nan':
+#                     impute_value='missing'
+#                     df[i].fillna(value=impute_value,inplace=True)
+#             if style == 'mode':
+#                 impute_value=df[i].mode(dropna=True).values[0]
+#                 df[i].fillna(value=impute_value,inplace=True)
+#             lst_impute.append([i,impute_value])
+#     return lst_var_drop,lst_impute
+
+
+def impute_var_v3(df,var,perc_drop,style):
     import numpy as np
     lst_var_drop=[]
-    lst_impute=[]
+    lst_impute=dict()
+    #add drop na for full df
     for i in var:
         if df[i].isna().sum()/len(df[i])>=perc_drop:
             lst_var_drop.append(i)
@@ -98,7 +128,7 @@ def impute_var_v2(df,var,perc_drop,style):
             if style == 'mode':
                 impute_value=df[i].mode(dropna=True).values[0]
                 df[i].fillna(value=impute_value,inplace=True)
-            lst_impute.append([i,impute_value])
+            lst_impute[i]=impute_value
     return lst_var_drop,lst_impute
 
 
@@ -131,11 +161,22 @@ def Standardize_values(df):
     SC.fit(df)
     return SC
 
+
 def Normalize_values(df):
     from sklearn.preprocessing import Normalizer
     transformer = Normalizer().fit(df)
     transformer.fit(df)
     return transformer
+
+
+def intersection(lst1, lst2): 
+    lst3 = [value for value in lst1 if value in lst2] 
+    return lst3 
+
+
+def no_intersection(lst1, lst2): 
+    lst3 = [value for value in lst1 if value not in lst2] 
+    return lst3 
 
 
 # def treat_str_var(df,var):
