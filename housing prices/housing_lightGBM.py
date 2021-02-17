@@ -62,6 +62,27 @@ def train_lightGBM(independent,dependent):
     return model
 
 
+#########################
+# from sklearn.ensemble import RandomForestRegressor
+# # rfecv = RFECV(estimator=RandomForestRegressor(n_estimators = 1000), step=1, cv=10)
+# # rfecv.fit(X_train, Y_train)
+# model = RandomForestRegressor(n_estimators = 1000)
+# model.fit(X_train,Y_train)
+
+# print(model.score(X_test,Y_test))
+
+
+
+
+#########################
+# from sklearn.ensemble import GradientBoostingRegressor
+# GBR = GradientBoostingRegressor(n_estimators = 1000 , max_depth = 5)
+# GBR.fit(X_train,Y_train)
+
+# print(GBR.score(X_test,Y_test))
+
+
+
 def create_output(model,drop_list,apply_trans):
     import pandas as pd
     #output

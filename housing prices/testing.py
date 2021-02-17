@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-
+## check CART - CLASSIFICATION TREE
+## RANDOM FOREST
 def import_file(full_path):
     import pandas as pd
     df=pd.read_csv(full_path+"\\train.csv")
@@ -131,8 +132,11 @@ import matplotlib.pyplot as plt
 from sklearn.feature_selection import RFECV
 # Create the RFE object and compute a cross-validated score.
 # The "accuracy" scoring is proportional to the number of correct classifications
-rfecv = RFECV(estimator=LogisticRegression(), step=1, cv=10, scoring='accuracy')
+rfecv = RFECV(estimator=LogisticRegression(max_iter=1000,solver='liblinear', random_state=41), step=1, cv=10, scoring='accuracy')
 rfecv.fit(X_train, Y_train)
+
+var=['Cabin_new_B', 'Cabin_new_D', 'Cabin_new_F', 'Cabin_new_G', 'Cabin_new_missing', 'Embarked_Q', 'Embarked_S', 'IsMinor', 'Pclass_2', 'Pclass_3', 'Sex_female', 'Sex_male', 'f_SibSp']
+var_2=['Cabin_new_B', 'Cabin_new_D', 'Cabin_new_F', 'Cabin_new_G', 'Cabin_new_missing', 'Embarked_Q', 'Embarked_S', 'IsMinor', 'Pclass_3', 'Sex_female', 'Sex_male', 'TravelAlone', 'f_SibSp']
 
 print("Optimal number of features: %d" % rfecv.n_features_)
 print('Selected features: %s' % list(X_train.columns[rfecv.support_]))
@@ -144,25 +148,34 @@ plt.ylabel("Cross validation score (nb of correct classifications)")
 plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
 plt.show()
 
-X_train=X_train[['Cabin_new_B', 'Cabin_new_D', 'Cabin_new_F', 'Cabin_new_G', 'Cabin_new_missing', 'Embarked_Q', 'Embarked_S', 'IsMinor', 'Pclass_2', 'Pclass_3', 'Sex_female', 'Sex_male', 'f_SibSp']]
-X_test=X_test[['Cabin_new_B', 'Cabin_new_D', 'Cabin_new_F', 'Cabin_new_G', 'Cabin_new_missing', 'Embarked_Q', 'Embarked_S', 'IsMinor', 'Pclass_2', 'Pclass_3', 'Sex_female', 'Sex_male', 'f_SibSp']]
+X_train=X_train[var]
+X_test=X_test[var]
 from sklearn.linear_model import LogisticRegression
 model=LogisticRegression(max_iter=1000,solver='liblinear', random_state=41)
 model.fit(X_train, Y_train)
 
-from sklearn.metrics import mean_squared_error, r2_score
-print('Mean squared error Train: %.2f'
-      % mean_squared_error(Y_train, model.predict(X_train)))
-# The coefficient of determination: 1 is perfect prediction
-print('Coefficient of determination R2 Train: %.2f'
-      % r2_score(Y_train, model.predict(X_train)))
 
-#Test
-print('Mean squared error Test: %.2f'
-      % mean_squared_error(Y_test, model.predict(X_test)))
-# The coefficient of determination: 1 is perfect prediction
-print('Coefficient of determination R2 Test: %.2f'
-      % r2_score(Y_test, model.predict(X_test)))
+## check performance:
+
+from sklearn.metrics import accuracy_score, log_loss, auc, roc_curve, mean_squared_error, r2_score
+
+Y_pred_train = model.predict(X_train)
+Y_pred_proba_train = model.predict_proba(X_train)[:, 1]
+
+Y_pred_test = model.predict(X_test)
+Y_pred_proba_test = model.predict_proba(X_test)[:, 1]
+[fpr, tpr, thr] = roc_curve(Y_test, Y_pred_proba_test)
+
+print('Train/Test split results:')
+print(model.__class__.__name__+" Train mean squared error is %.2f" % mean_squared_error(Y_train, Y_pred_train))
+print(model.__class__.__name__+" Train R2 is %.2f" % r2_score(Y_train, Y_pred_train))
+print(model.__class__.__name__+" Test mean squared error is %.2f" % mean_squared_error(Y_test, Y_pred_test))
+print(model.__class__.__name__+" Test R2 is %.2f" % r2_score(Y_test, Y_pred_test))
+print(model.__class__.__name__+" Test accuracy is %2.3f" % accuracy_score(Y_test, Y_pred_test))
+print(model.__class__.__name__+" Test log loss is %2.3f" % log_loss(Y_test, Y_pred_proba_test))
+print(model.__class__.__name__+" Test auc is %2.3f" % auc(fpr, tpr))
+
+
 
 
 df_val=pd.read_csv(full_path+"\\test.csv")
@@ -179,10 +192,9 @@ X_val= apply_transformation(df=X_val, drop_list_woTarget=drop_list_woTarget)
 #print(X_val.isna().sum())
 
 
-
 # no_intersection(list(X_train.columns),list(X_val.columns))
 
-df_val['Survived']= model.predict(X_val[['Cabin_new_B', 'Cabin_new_D', 'Cabin_new_F', 'Cabin_new_G', 'Cabin_new_missing', 'Embarked_Q', 'Embarked_S', 'IsMinor', 'Pclass_2', 'Pclass_3', 'Sex_female', 'Sex_male', 'f_SibSp']])
+df_val['Survived']= model.predict(X_val[var])
 
 out=df_val[['PassengerId', 'Survived']]
 out.to_csv(path_or_buf=full_path+"\\result.csv",index=False)
