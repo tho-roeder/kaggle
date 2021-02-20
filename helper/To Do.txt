@@ -9,3 +9,7 @@
 09) same variables in test/val else drop or impute
 10) improve one hot encoding
 11) import files properly
+12) for titanic:
+## check CART - CLASSIFICATION TREE
+## RANDOM FOREST
+13) from sklearn.preprocessing import OneHotEncoder vs. dummy
