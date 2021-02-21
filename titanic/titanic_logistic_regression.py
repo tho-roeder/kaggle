@@ -15,11 +15,9 @@ def import_file(full_path):
 full_path="C:\\Users\\thoma\\Desktop\\VM share\\Python\\files\\Kaggle\\titanic"
 df=import_file(full_path)
 
-
 # get_violinplot_for_target(df=df
 #                 ,var=['Cabin_new'] 
 #                 ,target='Survived')
-
 
 #create new variables:
 df['Cabin_new']=df['Cabin'].str[0:1]
@@ -34,6 +32,11 @@ df['f_SibSp']=np.where((df["SibSp"])>0, 0, 1)
 df['f_Parch']=np.where((df["Parch"])>0, 0, 1)
 df['IsMinor']=np.where(df['Age']<=16, 1, 0)
 df['Family']=df["SibSp"]+df["Parch"]
+df['Title'] = df['Name'].str.split(", ", expand=True)[1].str.split(".", expand=True)[0]
+title_names = (df['Title'].value_counts() < 10)
+df['Title'] = df['Title'].apply(lambda x: 'missing' if title_names.loc[x] == True else x)
+
+# was derived basis training data - no data leakage
 
 def fare_binning(Fare):
   if Fare <= 10.481249809265137:
@@ -42,33 +45,32 @@ def fare_binning(Fare):
     else:  # if Fare > 7.133349895477295
       return 2
   else:  # if Fare > 10.481249809265137
-    if Fare <= 74.375:
+    if Fare <= 52.277099609375:
       return 3
-    else:  # if Fare > 74.375
-      return 4
+    else:  # if Fare > 52.277099609375
+      return 4 
   
 df['Fare_bin']=df['Fare'].apply(lambda x: fare_binning(x))
 
 def age_binning(Age):
-  if Age <= 40.25:
-    if Age <= 17.5:
+  if Age <= 6.0:
+    if Age <= 2.5:
       return 1
-    else:  # if Age > 17.5
+    else:  # if Age > 2.5
       return 2
-  else:  # if Age > 40.25
-    if Age <= 58.5:
+  else:  # if Age > 6.0
+    if Age <= 63.5:
       return 3
-    else:  # if Age > 58.5
+    else:  # if Age > 63.5
       return 4
-
+  
 df['Age_bin']=df['Age'].apply(lambda x: age_binning(x))
-
 
 independent=df.drop(columns='Survived')
 dependent=df['Survived']
 
 from sklearn.model_selection import train_test_split
-X_train, X_test, Y_train, Y_test=train_test_split(independent, dependent, train_size=0.3, random_state=41, shuffle=False)
+X_train, X_test, Y_train, Y_test=train_test_split(independent, dependent, train_size=0.7, random_state=41, shuffle=False)
 
 X_train.drop(columns=['Cabin'], inplace=True)
 X_train.drop('SibSp', axis=1, inplace=True)
@@ -86,6 +88,16 @@ drop_list_str,impute_value_str=impute_var_v4(df=X_train,var=str_var_nan,perc_dro
 drop_list_lowCor=merge_low_corr(df_ind=X_train, df_dep=Y_train, target='Survived', min_cor=0.05)
 drop_list_max_perc_rep=same_value(df=X_train,var=all_var,max_perc_rep=0.95)
 
+# tree, pic_fare= get_tree_pic(df_X=X_train, df_Y=Y_train, var=['Fare'])
+# tree_to_code(tree=tree, feature_names=['Fare'])
+# pic_fare
+
+# tree, pic_age= get_tree_pic(df_X=X_train, df_Y=Y_train, var=['Age'])
+# tree_to_code(tree=tree, feature_names=['Age'])
+# pic_age
+
+#get_bins(df=df,var=['Fare'],nbr_bins=3)
+
 
 drop_list_woTarget=(drop_list_num+drop_list_str
                     #+drop_list_lowCor
@@ -96,7 +108,7 @@ drop_list=(drop_list_woTarget)
 
 X_train.drop(columns=drop_list_woTarget, inplace=True)
 import pandas as pd
-X_train=pd.get_dummies(X_train, columns=["Pclass","Embarked","Sex","Cabin_new","Age_bin","Fare_bin"])
+X_train=pd.get_dummies(X_train, columns=["Pclass","Embarked","Sex","Cabin_new","Age_bin","Fare_bin","Title"])
 X_train['Cabin_new_T']=0
 
 X_train.sort_index(ascending=True, axis=1, inplace=True)
@@ -125,18 +137,23 @@ def apply_transformation(df, drop_list_woTarget):
     df.drop(columns=['Cabin'], inplace=True)
     df.drop('SibSp', axis=1, inplace=True)
     df.drop('Parch', axis=1, inplace=True)
+    df['Title'] = df['Name'].str.split(", ", expand=True)[1].str.split(".", expand=True)[0]
+    df['Title'] = df['Title'].apply(lambda x: 'missing' if title_names.loc[x] == True else x)
     df.drop(columns=drop_list_woTarget, inplace=True)
-    
-    df=pd.get_dummies(df,columns=["Pclass","Embarked","Sex","Cabin_new","Age_bin","Fare_bin"])
+    df=pd.get_dummies(df,columns=["Pclass","Embarked","Sex","Cabin_new","Age_bin","Fare_bin","Title"])
     
     df.sort_index(ascending=True, axis=1, inplace=True)
 
-    #df['Cabin_new_T']=0
+    if 'Cabin_new_T' not in df.columns: 
+        df['Cabin_new_T']=0
+    if 'Cabin_new_G' not in df.columns: 
+        df['Cabin_new_G']=0
     # df = SC.transform(df)
     #df=TF.transform(df)
     return df
 
 X_test = apply_transformation(X_test, drop_list_woTarget)
+
 
 #print(X_test.isna().sum())
 
@@ -173,7 +190,7 @@ min_features_to_select = 1  # Minimum number of features to consider
 
 rfecv = RFECV(estimator=model
               ,step=min_features_to_select
-              ,cv=StratifiedKFold(10)
+              ,cv=StratifiedKFold(5)
               ,scoring='accuracy')
 rfecv.fit(X_train, Y_train)
 
@@ -265,7 +282,9 @@ X_val['IsMinor']=np.where(X_val['Age']<=16, 1, 0)
 X_val['Family']=X_val["SibSp"]+df["Parch"]
 X_val['Fare_bin']=X_val['Fare'].apply(lambda x: fare_binning(x))
 X_val['Age_bin']=X_val['Age'].apply(lambda x: age_binning(x))
-
+X_val['Title'] = X_val['Name'].str.split(", ", expand=True)[1].str.split(".", expand=True)[0]
+title_names = (X_val['Title'].value_counts() < 10)
+X_val['Title'] = X_val['Title'].apply(lambda x: 'missing' if title_names.loc[x] == True else x)
 
 X_val= apply_transformation(df=X_val, drop_list_woTarget=drop_list_woTarget)
 #print(X_val.isna().sum())

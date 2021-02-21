@@ -24,7 +24,7 @@ def pre_work(df):
                 str_var_nonan.append(i)
     return list(num_var_nan+ num_var_nonan+ str_var_nan+ str_var_nonan), num_var_nan, num_var_nonan, str_var_nan, str_var_nonan
 
-
+### plotting
 def plot_num_var(df,var):
     import matplotlib.pyplot as plt
     for i in var:
@@ -234,3 +234,70 @@ def no_intersection(lst1, lst2):
 #     le=LabelEncoder()
 #     for i in var:
 #         df[i]=le.fit_transform(df[i])
+
+
+def tree_to_code(tree, feature_names):
+    from sklearn.tree import _tree
+    tree_ = tree.tree_
+    feature_name = [
+        feature_names[i] if i != _tree.TREE_UNDEFINED else "undefined!"
+        for i in tree_.feature
+    ]
+    print ("def tree({}):".format(", ".join(feature_names)))
+
+    def recurse(node, depth):
+        indent = "  " * depth
+        if tree_.feature[node] != _tree.TREE_UNDEFINED:
+            name = feature_name[node]
+            threshold = tree_.threshold[node]
+            print ("{}if {} <= {}:".format(indent, name, threshold))
+            recurse(tree_.children_left[node], depth + 1)
+            print ("{}else:  # if {} > {}".format(indent, name, threshold))
+            recurse(tree_.children_right[node], depth + 1)
+        else:
+            print ("{}return {}".format(indent, tree_.value[node]))
+
+    recurse(0, 1)
+    
+
+def get_tree_pic(df_X, df_Y, var):
+    from sklearn.tree import DecisionTreeClassifier    
+    import numpy as np
+    from sklearn.tree import export_graphviz
+    from six import StringIO
+    from IPython.display import Image  
+    import pydotplus
+
+    if len(var)==1:
+        split=np.array(df_X[var]).reshape(-1, 1)
+    else:
+        split=df_X[var]
+    classifier = DecisionTreeClassifier(random_state = 0, max_depth=2)
+    
+    classifier.fit(split, df_Y)
+    
+    dot_data = StringIO()
+    export_graphviz(classifier
+                    ,out_file=dot_data
+                    ,filled=True
+                    ,rounded=True
+                    ,special_characters=True
+                    ,feature_names = var
+                    ,proportion=True
+                    ,rotate=True
+                    ,class_names=['0','1'])
+    graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
+    # graph.write_png('tree.png')
+    Image(graph.create_png())
+    return classifier, Image(graph.create_png())
+
+
+def get_bins(df,var,nbr_bins):
+    #pd.qcut(factors, 5).value_counts() #fixed volume
+    #pd.cut(factors, 5).value_counts() #fixed intervalls e.g. 80/5=16
+    import pandas as pd
+    for i in var:
+        df[i+'_bin_vol'] = pd.qcut(df[i], nbr_bins)
+        df[i+'_bin_int'] = pd.cut(df[i], nbr_bins)
+        print(df[i+'_bin_vol'].value_counts())
+        print(df[i+'_bin_int'].value_counts())
