@@ -171,7 +171,7 @@ def apply_transformation(df, drop_list_woTarget):
     df['Fare_bin']=df['Fare'].apply(lambda x: fare_binning(x))
     df['Age_bin']=df['Age'].apply(lambda x: age_binning(x))
     
-    df.drop(columns=drop_list_woTarget, inplace=True)
+    #df.drop(columns=drop_list_woTarget, inplace=True)
     df=pd.get_dummies(df,columns=["Pclass","Embarked","Sex","Cabin_new","Age_bin","Fare_bin","Title","Boarded"])
     
     df.sort_index(ascending=True, axis=1, inplace=True)
@@ -267,11 +267,10 @@ plt.show()
 
 
 df_val=pd.read_csv(full_path+"\\test.csv")
-X_val=df_val.copy(deep=True)
+X_val=df_val.copy()
 X_val['Cabin_new']=X_val['Cabin'].str[0:1]
 #plot_str_var(X_val,['Cabin_new'])
-X_val['Embarked_missing']=0
-X_val['Cabin_new_T']=0
+
 X_val['f_SibSp']=np.where((X_val["SibSp"])>0, 0, 1)
 X_val['f_Parch']=np.where((X_val["Parch"])>0, 0, 1)
 X_val['IsMinor']=np.where(X_val['Age']<=16, 1, 0)
