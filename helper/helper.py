@@ -3,7 +3,6 @@
 # import os
 # path="C:\\Users\\thoma\\Desktop\\VM share\\Python\\Kaggle\\helper"
 # os.chdir(path)
-# print(os.getcwd())
 # %run helper.py
 
 def pre_work(df):
