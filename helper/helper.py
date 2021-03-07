@@ -5,6 +5,15 @@
 # os.chdir(path)
 # %run helper.py
 
+def getGeneralInformation(df):
+    print(df.info)
+    print()
+    print(type(df))
+    print()
+    print(df.describe)
+    print()
+    print(df.dtypes)
+
 def pre_work(df):
     num_var_nan=list()
     num_var_nonan=list()
@@ -67,85 +76,94 @@ def get_heatmap(df):
     plt.show()
 
 
-# def impute_var(df,var,perc_drop,style):
-#     import numpy as np
-#     var_drop=[]
-#     for i in var:
-#         if df[i].isna().sum()/len(df[i])>=perc_drop:
-#             var_drop.append(i)
-#         else:
-#             if df[i].dtypes != 'object':
-#                 if style == 'mean':
-#                     df[i].fillna(value=df[i].mean(),inplace=True)
-#                 if style == 'median':
-#                     df[i].fillna(value=df[i].median(),inplace=True)
-#                 if style == 'nan':
-#                     df[i].fillna(value=np.nan,inplace=True)
-#             if df[i].dtypes == 'object':
-#                 if style == 'nan':
-#                     df[i].fillna(value='missing',inplace=True)
-#             if style == 'mode':
-#                 df[i].fillna(value=df[i].mode(dropna=True).values[0],inplace=True)
-#     return var_drop
+def get_scatter_for_target(df,var,target):
+    import matplotlib.pyplot as plt
+    for i in var:
+        plt.scatter(x=df[target], y=df[i])
+        plt.title("{} vs {}".format(i,target))
+        plt.show()
+        plt.clf()
 
 
-# def impute_var_v2(df,var,perc_drop,style):
-#     import numpy as np
-#     lst_var_drop=[]
-#     lst_impute=[]
-#     for i in var:
-#         if df[i].isna().sum()/len(df[i])>=perc_drop:
-#             lst_var_drop.append(i)
-#         else:
-#             if df[i].dtypes != 'object':
-#                 if style == 'mean':
-#                     impute_value=df[i].mean()
-#                     df[i].fillna(value=impute_value,inplace=True)
-#                 if style == 'median':
-#                     impute_value=df[i].median()
-#                     df[i].fillna(value=impute_value,inplace=True)
-#                 if style == 'nan':
-#                     impute_value=np.nan
-#                     df[i].fillna(value=impute_value,inplace=True)
-#             if df[i].dtypes == 'object':
-#                 if style == 'nan':
-#                     impute_value='missing'
-#                     df[i].fillna(value=impute_value,inplace=True)
-#             if style == 'mode':
-#                 impute_value=df[i].mode(dropna=True).values[0]
-#                 df[i].fillna(value=impute_value,inplace=True)
-#             lst_impute.append([i,impute_value])
-#     return lst_var_drop,lst_impute
+def impute_var(df,var,perc_drop,style):
+    import numpy as np
+    var_drop=[]
+    for i in var:
+        if df[i].isna().sum()/len(df[i])>=perc_drop:
+            var_drop.append(i)
+        else:
+            if df[i].dtypes != 'object':
+                if style == 'mean':
+                    df[i].fillna(value=df[i].mean(),inplace=True)
+                if style == 'median':
+                    df[i].fillna(value=df[i].median(),inplace=True)
+                if style == 'nan':
+                    df[i].fillna(value=np.nan,inplace=True)
+            if df[i].dtypes == 'object':
+                if style == 'nan':
+                    df[i].fillna(value='missing',inplace=True)
+            if style == 'mode':
+                df[i].fillna(value=df[i].mode(dropna=True).values[0],inplace=True)
+    return var_drop
 
 
-# def impute_var_v3(df,var,perc_drop,style):
-#     import numpy as np
-#     lst_var_drop=[]
-#     lst_impute=dict()
-#     #add drop na for full df
-#     for i in var:
-#         if df[i].isna().sum()/len(df[i])>=perc_drop:
-#             lst_var_drop.append(i)
-#         else:
-#             if df[i].dtypes != 'object':
-#                 if style == 'mean':
-#                     impute_value=df[i].mean()
-#                     df[i].fillna(value=impute_value,inplace=True)
-#                 if style == 'median':
-#                     impute_value=df[i].median()
-#                     df[i].fillna(value=impute_value,inplace=True)
-#                 if style == 'nan':
-#                     impute_value=np.nan
-#                     df[i].fillna(value=impute_value,inplace=True)
-#             if df[i].dtypes == 'object':
-#                 if style == 'nan':
-#                     impute_value='missing'
-#                     df[i].fillna(value=impute_value,inplace=True)
-#             if style == 'mode':
-#                 impute_value=df[i].mode(dropna=True).values[0]
-#                 df[i].fillna(value=impute_value,inplace=True)
-#             lst_impute[i]=impute_value
-#     return lst_var_drop,lst_impute
+def impute_var_v2(df,var,perc_drop,style):
+    import numpy as np
+    lst_var_drop=[]
+    lst_impute=[]
+    for i in var:
+        if df[i].isna().sum()/len(df[i])>=perc_drop:
+            lst_var_drop.append(i)
+        else:
+            if df[i].dtypes != 'object':
+                if style == 'mean':
+                    impute_value=df[i].mean()
+                    df[i].fillna(value=impute_value,inplace=True)
+                if style == 'median':
+                    impute_value=df[i].median()
+                    df[i].fillna(value=impute_value,inplace=True)
+                if style == 'nan':
+                    impute_value=np.nan
+                    df[i].fillna(value=impute_value,inplace=True)
+            if df[i].dtypes == 'object':
+                if style == 'nan':
+                    impute_value='missing'
+                    df[i].fillna(value=impute_value,inplace=True)
+            if style == 'mode':
+                impute_value=df[i].mode(dropna=True).values[0]
+                df[i].fillna(value=impute_value,inplace=True)
+            lst_impute.append([i,impute_value])
+    return lst_var_drop,lst_impute
+
+
+def impute_var_v3(df,var,perc_drop,style):
+    import numpy as np
+    lst_var_drop=[]
+    lst_impute=dict()
+    #add drop na for full df
+    for i in var:
+        if df[i].isna().sum()/len(df[i])>=perc_drop:
+            lst_var_drop.append(i)
+        else:
+            if df[i].dtypes != 'object':
+                if style == 'mean':
+                    impute_value=df[i].mean()
+                    df[i].fillna(value=impute_value,inplace=True)
+                if style == 'median':
+                    impute_value=df[i].median()
+                    df[i].fillna(value=impute_value,inplace=True)
+                if style == 'nan':
+                    impute_value=np.nan
+                    df[i].fillna(value=impute_value,inplace=True)
+            if df[i].dtypes == 'object':
+                if style == 'nan':
+                    impute_value='missing'
+                    df[i].fillna(value=impute_value,inplace=True)
+            if style == 'mode':
+                impute_value=df[i].mode(dropna=True).values[0]
+                df[i].fillna(value=impute_value,inplace=True)
+            lst_impute[i]=impute_value
+    return lst_var_drop,lst_impute
 
 
 def impute_var_v4(df,var,perc_drop,style,value=None):
@@ -185,6 +203,15 @@ def low_corr(df,target,min_cor):
     cor=df.corr()
     drop_list_lowCor=cor[abs(cor[target])<=min_cor]
     return list(drop_list_lowCor.index)
+
+
+def get_df_high_corr_target(df,target,min_cor):
+    cor=df.corr()
+    df_highCor=cor[abs(cor[target])>=0.5]
+    lst_highCor=list(df_highCor.index)
+    if target in lst_highCor:
+        lst_highCor.remove(target)
+    return df_highCor, lst_highCor
 
 
 def merge_low_corr(df_ind,df_dep,target,min_cor):
@@ -300,3 +327,36 @@ def get_bins(df,var,nbr_bins):
         df[i+'_bin_int'] = pd.cut(df[i], nbr_bins)
         print(df[i+'_bin_vol'].value_counts())
         print(df[i+'_bin_int'].value_counts())
+
+
+def get_var_value_counts(df,var):
+    lst_var_with_value_counts=[]
+    for i in var:
+        lst_var_with_value_counts.append([i, len(list(df[i].value_counts().index)),list(df[i].value_counts().index)])
+    return lst_var_with_value_counts
+
+
+# def create_flags(x):
+#     import re
+#     import pandas as pd
+#     if pd.isnull(x):
+#         return 3
+#     elif re.search(r'[A-Za-z]',x) != None:
+#         return 1
+#     elif re.search(r'[0-9]',x) != None:
+#         return 2
+#     else:
+#         return 4
+
+
+def create_flags(x):
+    import re
+    import pandas as pd
+    if pd.isnull(x):
+        return 'M'
+    elif re.search(r'[A-Za-z]',x) != None:
+        return 'C'
+    elif re.search(r'[0-9]',x) != None:
+        return 'N'
+    else:
+        return 'O'

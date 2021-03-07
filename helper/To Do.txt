@@ -13,3 +13,5 @@
 ## check CART - CLASSIFICATION TREE
 ## RANDOM FOREST
 13) from sklearn.preprocessing import OneHotEncoder vs. dummy
+14) model ensembling/stack
+15) cross_validate

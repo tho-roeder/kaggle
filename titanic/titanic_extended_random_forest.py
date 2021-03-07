@@ -44,17 +44,7 @@ df['country']=df['Hometown'].str.split(',').str.get(-1).str.split('[').str.get(0
 df['Body']=df['Body'].str.replace('[MB]','',regex=True).str.split('[').str.get(0).str.split('{').str.get(0)
 df['Fare_Per_Person']=df['Fare']/(df['Family_Size']+1)
 
-def create_flags(x):
-    import re
-    import pandas as pd
-    if pd.isnull(x):
-        return 3
-    elif re.search(r'[A-Za-z]',x) != None:
-        return 1
-    elif re.search(r'[0-9]',x) != None:
-        return 2
-    else:
-        return 4
+
 
 df['f_Lifeboat']=df['Lifeboat'].apply(lambda x: create_flags(x))
 df['f_Ticket']=df['Ticket'].apply(lambda x: create_flags(x))
@@ -136,8 +126,8 @@ X_train.drop(columns=drop_list_woTarget, inplace=True)
 
 import pandas as pd
 X_train=pd.get_dummies(X_train, columns=["Pclass","Embarked","Sex","Cabin_new","Age_bin","Fare_bin","Title","Boarded"])
-X_train['Cabin_new_T']=0
-
+if 'Cabin_new_T' not in X_train.columns: 
+    X_train['Cabin_new_T']=0
 X_train.sort_index(ascending=True, axis=1, inplace=True)
 
 # Standardize values
@@ -150,12 +140,6 @@ X_train.sort_index(ascending=True, axis=1, inplace=True)
 
 
 def apply_transformation(df, drop_list_woTarget):
-    for i in impute_value_num.keys():
-        df[i].fillna(impute_value_num[i], inplace=True)
-    for i in impute_value_str.keys():
-        df[i].fillna(impute_value_str[i], inplace=True)
-
-    impute_var_v4(df=df,var=num_var_nonan,perc_drop=1,style='mean')
 
     df.drop(columns=['Cabin'], inplace=True)
     df['Title'] = df['Name'].str.split(", ", expand=True)[1].str.split(".", expand=True)[0]
@@ -171,7 +155,13 @@ def apply_transformation(df, drop_list_woTarget):
     df['Fare_bin']=df['Fare'].apply(lambda x: fare_binning(x))
     df['Age_bin']=df['Age'].apply(lambda x: age_binning(x))
     
-    #df.drop(columns=drop_list_woTarget, inplace=True)
+    impute_var_v4(df=df,var=num_var_nonan,perc_drop=1,style='mean')
+    for i in impute_value_num.keys():
+        df[i].fillna(impute_value_num[i], inplace=True)
+    for i in impute_value_str.keys():
+        df[i].fillna(impute_value_str[i], inplace=True)
+    
+    df.drop(columns=drop_list_woTarget, inplace=True)
     df=pd.get_dummies(df,columns=["Pclass","Embarked","Sex","Cabin_new","Age_bin","Fare_bin","Title","Boarded"])
     
     df.sort_index(ascending=True, axis=1, inplace=True)
@@ -184,6 +174,7 @@ def apply_transformation(df, drop_list_woTarget):
         df['Boarded_missing']=0
     # df = SC.transform(df)
     #df=TF.transform(df)
+
     return df
 
 X_test = apply_transformation(X_test, drop_list_woTarget)
@@ -294,8 +285,8 @@ X_val= apply_transformation(df=X_val, drop_list_woTarget=drop_list_woTarget)
 
 # no_intersection(list(X_train.columns),list(X_val.columns))
 
-df_val['Survived']= model.predict(X_val[var])
-# something is not correct
+df_val['Survived']= model.predict(X_val[var]).astype('int')
 
+out.dtypes
 out=df_val[['PassengerId', 'Survived']]
 out.to_csv(path_or_buf=full_path+"\\result.csv",index=False)
