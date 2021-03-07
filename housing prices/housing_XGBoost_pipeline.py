@@ -15,51 +15,28 @@ import matplotlib.pyplot as plt
 df=pd.read_csv(full_path+"\\train.csv", index_col='Id')
 
 
-### 3. analyse data
+### 3. exploratory data analysis
 # 3.1 create overview of data set:
 #getGeneralInformation(df)
 all_var, num_var_nan, num_var_nonan, str_var_nan, str_var_nonan= pre_work(df)   
 
-# 3.2 string variables:
+# 3.2 plot variables:
 # plot_str_var(df=df,var=str_var_nan)
 # plot_str_var(df=df,var=['Street'])
+#plot_num_var(df=df,var=num_var_nan)
+# median for num_var_nan
 
+
+# 3.3 enrich data:
 # Variable treement String:  
 str_lst_flags=['Alley','Street','MiscFeature','FireplaceQu','GarageQual','Fence']
 for i in str_lst_flags:
     df['f_'+str(i)]=df[i].apply(lambda x: create_flags(x))
 
-# for i in ['BsmtFinType1','BsmtFinType2']:
-#     df[i].replace(['GLQ','ALQ','BLQ','Rec','LwQ','Unf',np.nan],[6,5,4,3,2,1,0],inplace=True)  
+# feture engineering a new feature "TotalSF"
+df['TotalSF'] = df['TotalBsmtSF'] + df['1stFlrSF'] + df['2ndFlrSF']
+df['Total_Bathrooms'] = (df['FullBath'] + (0.5 * df['HalfBath']) + df['BsmtFullBath'] + (0.5 * df['BsmtHalfBath']))
 
-# # quality scale
-# def convert_scale(x):
-#     if x=="Ex":
-#         return 5 
-#     elif x=="Gd":
-#         return 4 
-#     elif x=="TA":
-#         return 3
-#     elif x=="Fa":
-#         return 2 
-#     elif x=="Po":
-#         return 1
-#     elif pd.isnull(x):
-#         return 0
-
-
-# str_lst_scale=['BsmtQual','BsmtCond','FireplaceQu','GarageQual','GarageCond','PoolQC'
-#                ,'ExterQual','ExterCond','HeatingQC','KitchenQual']
-
-# for i in str_lst_scale:
-#     df['f_'+str(i)]=df[i].apply(lambda x: convert_scale(x))
-
-# mode or missing (imputation after test/train split)
-#str_lst_mode=['MasVnrType','BsmtExposure','BsmtFinType1','BsmtFinType2','Electrical','GarageType','GarageFinish','Fence'] 
-
-# 3.3 num variables:
-# plot_num_var(df=df,var=num_var_nan)
-# median for num_var_nan
 
 # 3.4 corr
 df_high_corr, high_corr_var=get_df_high_corr_target(df=df,target='SalePrice',min_cor=0.5)
@@ -82,12 +59,6 @@ num_var_nonan.remove('SalePrice')
 print(X_train[str_var_nan + str_var_nonan].isna().sum())
 print(X_train[num_var_nan + num_var_nonan].isna().sum())
 
-# test_001=X_train[X_train['LotFrontage'].isna() ==True]
-# test_001_df_high_corr, test_001_high_corr_var=get_df_high_corr_target(df=X_train,target='LotFrontage',min_cor=0.9)
-# get_scatter_for_target(df=df,var=test_001_high_corr_var,target='LotFrontage')
-# test_002=X_train[X_train['LotFrontage'].isna() ==True][['LotArea','LotFrontage']]
-# test_003=X_train[['LotArea','LotFrontage']]
-
 # 4.3.2 impute string
 drop_list_str,impute_value_str=impute_var_v4(df=X_train,var=str_var_nan,perc_drop=1,style='value',value='NA')
 #drop_list_str,impute_value_str=impute_var_v4(df=X_train,var=str_lst_mode,perc_drop=1,style='mode')
@@ -100,6 +71,23 @@ drop_list_lowCor=merge_low_corr(df_ind=X_train, df_dep=Y_train, target='SalePric
 all_var.remove('SalePrice')
 drop_list_max_perc_rep=same_value(df=X_train,var=all_var,max_perc_rep=0.95)
 # get_violinplot_for_target(df=df,var=drop_list_max_perc_rep,target='SalePrice')
+
+
+def log_var(df, num_var):
+    #import seaborn as sns
+    apply_value_log=[]
+    from scipy.stats import skew
+    skewed_feats = df[num_var].apply(lambda x: skew(x.dropna())).sort_values(ascending=False)
+    for i in skewed_feats.index:
+        if skewed_feats[i]>=0.7:
+            #   sns.displot(df[i])
+            df['log_'+i]=np.log1p(df[i])
+            # sns.displot(df['log_'+i])
+            apply_value_log.append(i)
+    return apply_value_log
+            
+apply_value_log=log_var(df=X_train, num_var=num_var_nan + num_var_nonan)
+
 
 # 4.3.4 final list
 drop_list=[]
@@ -165,7 +153,7 @@ column_trans = make_column_transformer(
     (OneHotEncoder(handle_unknown='ignore'), nominal),
     (OrdinalEncoder(categories=category_array), categorial),
     remainder='passthrough')
-
+X_train.sort_index(axis=1, inplace=True)
 X_train_fitted=column_trans.fit_transform(X_train)
 #print(column_trans.named_transformers_.ordinalencoder.categories_)
 
@@ -175,83 +163,73 @@ for i in impute_value_num.keys():
     X_test[i].fillna(impute_value_num[i], inplace=True)
 for i in impute_value_str.keys():
     X_test[i].fillna(impute_value_str[i], inplace=True)
+for i in apply_value_log:
+    X_test['log_'+i]=np.log1p(X_test[i])
+    
 
 print(X_test.isna().sum())
-
-# X_test_fitted=column_trans.transform(X_test)
+X_test.sort_index(axis=1, inplace=True)
+X_test_fitted=column_trans.transform(X_test)
 
 # X_train_df=pd.DataFrame(X_train_fitted)
 # X_test_df=pd.DataFrame(X_test_fitted)
-
 # rfecv.fit(X_train_fitted,Y_train)
 # rfecv.score(X_test_fitted,Y_test)
 
+# 4.5 tranformation of dependent 
+#histogram
+import seaborn as sns
+Y_train_Log1p = np.log1p(Y_train)
+sns.displot(Y_train_Log1p)
+sns.displot(Y_train)
+
+Y_test_Log1p = np.log1p(Y_test)
 
 ### 5 modeling
 # 5.1 modeling on train
-from sklearn.linear_model import LinearRegression
-model=LinearRegression()
 
-from sklearn.feature_selection import RFECV
-from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import SCORERS
-print(SCORERS.keys())
+from xgboost import XGBRegressor
+import xgboost as xgb
+from sklearn.model_selection import cross_val_score, GridSearchCV, KFold, RandomizedSearchCV
 
 
-min_features_to_select = 1  # Minimum number of features to consider
+xgbr = xgb.XGBRegressor()
 
-rfecv = RFECV(estimator=model
-              ,step=min_features_to_select
-              ,cv=StratifiedKFold(5)
-              ,verbose=1
-              ,scoring='r2'
-              )
-
-from sklearn.pipeline import make_pipeline
-pipe = make_pipeline(column_trans, rfecv)
-pipe.fit(X_train, Y_train)
-pipe.score(X_train,Y_train)
-pipe.score(X_test,Y_test)
+params = {'learning_rate': [0.02], 'n_estimators' : [2000], 'max_depth':[3], 
+          'colsample_bytree' : [0.4], 'subsample' : [0.7]}
 
 
-print("Optimal number of features : %d" % pipe.n_features_in_)
-#print('Selected features: %s' % list(X_train_df.columns[pipe._final_estimator.support_]))
-# var_selected=list(X_train.columns[rfecv.support_])
-# model_param= dict(zip(var_selected,rfecv.estimator_.coef_))
-# model_param['intercept']=rfecv.estimator_.intercept_
-# X_train=X_train[var_selected]
-# X_test=X_test[var_selected]
+model = GridSearchCV(xgbr, params, cv = 5, n_jobs =1)
+model.fit(X_train_fitted,Y_train_Log1p)
 
 
-# assessing result
+print("Best params:{}".format(model.best_params_))
+model = model.best_estimator_
+
+
 from sklearn.metrics import mean_squared_error, r2_score
-
+  
+Y_train_model=Y_train_Log1p
+Y_test_model=Y_test_Log1p
+  
 #Train
-print("R^2 Train score:")
-print(pipe.score(X_train, Y_train))
-print('Mean squared error: %.2f'
-      % mean_squared_error(Y_train, pipe.predict(X_train)))
+print('Mean squared error Train: %.2f'
+      % mean_squared_error(Y_train_model, model.predict(X_train_fitted)))
 # The coefficient of determination: 1 is perfect prediction
-print('Coefficient of determination: %.2f'
-      % r2_score(Y_train, pipe.predict(X_train)))
+print('Coefficient of determination R2 Train: %.2f'
+      % r2_score(Y_train_model, model.predict(X_train_fitted)))
 
 #Test
-print("R^2 Test score:")
-print(pipe.score(X_test, Y_test))
-print('Mean squared error: %.2f'
-      % mean_squared_error(Y_test, pipe.predict(X_test)))
+print('Mean squared error Test: %.2f'
+      % mean_squared_error(Y_test_model, model.predict(X_test_fitted)))
 # The coefficient of determination: 1 is perfect prediction
-print('Coefficient of determination: %.2f'
-      % r2_score(Y_test, pipe.predict(X_test)))
+print('Coefficient of determination R2 Test: %.2f'
+      % r2_score(Y_test_model, model.predict(X_test_fitted)))
 
 
-X_test['predict']=pipe.predict(X_test)
-final_df=X_test.merge(Y_test, on='Id')
+X_test['predict']=np.expm1(model.predict(X_test_fitted))
+final_df=X_test.merge(Y_test_model, on='Id')
 final_df['diff']=final_df['predict']-final_df['SalePrice']
-
-
-#from sklearn.metrics import classification_report
-#print(classification_report(Y_test, reg.predict(X_test)))
 
 # visual 
 plt.scatter(final_df['predict'],final_df['SalePrice'])
@@ -272,15 +250,21 @@ for i in impute_value_num.keys():
 for i in impute_value_str.keys():
     df_val[i].fillna(impute_value_str[i], inplace=True)
 
-test_001=df_val.isna().sum().sort_values()
-
 impute_var_v4(df=df_val,var=str_var_nonan,perc_drop=1,style='mode')
 impute_var_v4(df=df_val,var=num_var_nonan,perc_drop=1,style='median')
 
-print(df_val.isna().sum().sort_values())
+for i in apply_value_log:
+    df_val['log_'+i]=np.log1p(df_val[i])
 
-pipe.predict(df_val)
-df_val['SalePrice']= pipe.predict(df_val)
+df_val['TotalSF'] = df_val['TotalBsmtSF'] + df_val['1stFlrSF'] + df_val['2ndFlrSF']
+df_val['Total_Bathrooms'] = (df_val['FullBath'] + (0.5 * df_val['HalfBath']) + df_val['BsmtFullBath'] + (0.5 * df_val['BsmtHalfBath']))
+
+
+print(df_val.isna().sum().sort_values())
+df_val.sort_index(axis=1, inplace=True)
+df_val_fitted=column_trans.transform(df_val)
+
+df_val['SalePrice']= np.expm1(model.predict(df_val_fitted))
 
 #output
 out=df_val['SalePrice']

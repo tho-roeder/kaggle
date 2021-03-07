@@ -15,3 +15,27 @@
 13) from sklearn.preprocessing import OneHotEncoder vs. dummy
 14) model ensembling/stack
 15) cross_validate
+16) PCA
+
+# one hot vs. get_dummies
+# predict value within data set to better impute
+# count different values for string
+
+#Exterior1st: Exterior covering on house: AsbShng	Asbestos Shingles
+#Exterior2nd: Exterior covering on house (if more than one material): AsbShng	Asbestos Shingles
+
+
+# from sklearn.pipeline import make_pipeline
+# from sklearn.model_selection import cross_val_score
+# pipe = make_pipeline(column_trans, rfecv)
+# print(cross_val_score(pipe, X_train, Y_train, cv=5, scoring='accuracy').mean())
+# missing catregoires in oneHot RRAn
+
+#pd.DataFrame(ohe.transform(x_test).toarray(), columns = ohe.get_feature_names())
+
+# from sklearn.model_selection import cross_val_score
+
+#print('Selected features: %s' % list(X_train_df.columns[pipe._final_estimator.support_]))
+
+# from sklearn.model_selection import cross_val_score, GridSearchCV, KFold, RandomizedSearchCV#
+# from sklearn.metrics import mean_squared_error
