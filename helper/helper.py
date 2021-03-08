@@ -363,6 +363,8 @@ def create_flags(x):
 
 
 def create_log_var(df, num_var):
+    import pandas as pd
+    import numpy as np
     #import seaborn as sns
     apply_value_log=[]
     from scipy.stats import skew

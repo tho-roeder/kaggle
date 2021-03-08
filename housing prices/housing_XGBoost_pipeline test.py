@@ -187,8 +187,8 @@ from sklearn.model_selection import cross_val_score, GridSearchCV, KFold, Random
 xgbr = xgb.XGBRegressor()
 
 # 1
-# params = {'learning_rate': [0.02], 'n_estimators' : [2000], 'max_depth':[3], 
-#           'colsample_bytree' : [0.4], 'subsample' : [0.7]}
+params = {'learning_rate': [0.02], 'n_estimators' : [2000], 'max_depth':[3], 
+          'colsample_bytree' : [0.4], 'subsample' : [0.7]}
 
 # 2
 # params = {'learning_rate': [0.015, 0.02, 0.025], 'n_estimators' : [1500,2000,2500], 
@@ -196,8 +196,10 @@ xgbr = xgb.XGBRegressor()
 #Best params:{'colsample_bytree': 0.5, 'learning_rate': 0.02, 'max_depth': 3, 'n_estimators': 2500, 'subsample': 0.7}
 
 # 3
-params = {'learning_rate': [0.018, 0.02, 0.022], 'n_estimators' : [2200,2500,2700], 
-          'max_depth':[2,3,4], 'colsample_bytree' : [0.5,0.6,0.7], 'subsample' : [0.65,0.70,0.75]}
+# params = {'learning_rate': [0.018, 0.02, 0.022], 'n_estimators' : [2200,2500,2700], 
+#           'max_depth':[2,3,4], 'colsample_bytree' : [0.5,0.6,0.7], 'subsample' : [0.65,0.70,0.75]}
+#Best params:{'colsample_bytree': 0.6, 'learning_rate': 0.02, 'max_depth': 4, 'n_estimators': 2200, 'subsample': 0.65}
+
 
 # other
 # params = {

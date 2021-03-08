@@ -29,3 +29,5 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.feature_selection import VarianceThreshold
 17) XGBoost and LightGBM hyperparameter
+18) interactions
+19) assign weights
