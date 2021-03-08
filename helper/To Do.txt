@@ -1,41 +1,31 @@
-01) variable transformation separate for train/test/validation - is it leakage?
-02) build  helper function for normalization and standardization
-03) done: treatment of missing values
-04) transform to categorical values
-05) check solutions: https://www.kaggle.com/faressayah/linear-regression-house-price-prediction, https://www.kaggle.com/sudhirnl7/linear-regression-tutorial
-06) try grid search in light gbm
-07) stepwise regression/logistic regression
-08) apply_transformation def
-09) same variables in test/val else drop or impute
-10) improve one hot encoding
-11) import files properly
-12) for titanic:
-## check CART - CLASSIFICATION TREE
-## RANDOM FOREST
-13) from sklearn.preprocessing import OneHotEncoder vs. dummy
-14) model ensembling/stack
-15) cross_validate
-16) PCA
-
-# one hot vs. get_dummies
-# predict value within data set to better impute
-# count different values for string
-
-#Exterior1st: Exterior covering on house: AsbShng	Asbestos Shingles
-#Exterior2nd: Exterior covering on house (if more than one material): AsbShng	Asbestos Shingles
-
-
-# from sklearn.pipeline import make_pipeline
-# from sklearn.model_selection import cross_val_score
-# pipe = make_pipeline(column_trans, rfecv)
-# print(cross_val_score(pipe, X_train, Y_train, cv=5, scoring='accuracy').mean())
-# missing catregoires in oneHot RRAn
-
-#pd.DataFrame(ohe.transform(x_test).toarray(), columns = ohe.get_feature_names())
-
-# from sklearn.model_selection import cross_val_score
-
-#print('Selected features: %s' % list(X_train_df.columns[pipe._final_estimator.support_]))
-
-# from sklearn.model_selection import cross_val_score, GridSearchCV, KFold, RandomizedSearchCV#
-# from sklearn.metrics import mean_squared_error
+01) Standardize and normalize values : improve helper function for normalization and standardization
+02) RandomizedSearchCV vs. GridSearchCV vs. Optuna (import optuna)
+03) review import of helper.py
+04) for binary: CART - CLASSIFICATION TREE / RANDOM FOREST
+05) drop first in oneHotEncoding even if errors
+06) One hot maintain variable names: #pd.DataFrame(ohe.transform(x_test).toarray(), columns = ohe.get_feature_names())
+07) model ensembling/stack
+08) cross_validate: from sklearn.model_selection import cross_val_score
+09) PCA 
+10) Cluster
+11) predict value within data set to better impute 
+12) review copied notebooks
+13) docker & AWS
+14) solve warning in code
+15) check loc and iloc
+16) 
+from sklearn.inspection import permutation_importance
+from lightgbm import LGBMRegressor
+import optuna
+from mlxtend.regressor import StackingCVRegressor
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder, PowerTransformer
+from sklearn.model_selection import cross_val_score, KFold
+from sklearn.linear_model import LinearRegression, Lasso, Ridge
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.svm import SVR
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.pipeline import Pipeline, FeatureUnion
+from sklearn.feature_selection import VarianceThreshold
+17) XGBoost and LightGBM hyperparameter

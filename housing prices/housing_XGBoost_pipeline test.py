@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+#Exterior1st: Exterior covering on house: AsbShng	Asbestos Shingles
+#Exterior2nd: Exterior covering on house (if more than one material): AsbShng	Asbestos Shingles
+
+
 ### 1. import helper
 import os
 path="C:\\Users\\thoma\\Desktop\\VM share\\Python\\Kaggle\\helper"
@@ -72,21 +76,8 @@ all_var.remove('SalePrice')
 drop_list_max_perc_rep=same_value(df=X_train,var=all_var,max_perc_rep=0.95)
 # get_violinplot_for_target(df=df,var=drop_list_max_perc_rep,target='SalePrice')
 
-
-def log_var(df, num_var):
-    #import seaborn as sns
-    apply_value_log=[]
-    from scipy.stats import skew
-    skewed_feats = df[num_var].apply(lambda x: skew(x.dropna())).sort_values(ascending=False)
-    for i in skewed_feats.index:
-        if skewed_feats[i]>=0.7:
-            #   sns.displot(df[i])
-            df['log_'+i]=np.log1p(df[i])
-            # sns.displot(df['log_'+i])
-            apply_value_log.append(i)
-    return apply_value_log
             
-apply_value_log=log_var(df=X_train, num_var=num_var_nan + num_var_nonan)
+apply_value_log=create_log_var(df=X_train, num_var=num_var_nan + num_var_nonan)
 
 
 # 4.3.4 final list
@@ -188,22 +179,49 @@ Y_test_Log1p = np.log1p(Y_test)
 ### 5 modeling
 # 5.1 modeling on train
 
-import lightgbm as lgb
+from xgboost import XGBRegressor
+import xgboost as xgb
+from sklearn.model_selection import cross_val_score, GridSearchCV, KFold, RandomizedSearchCV
 
-d_train = lgb.Dataset(X_train_fitted, label=Y_train_Log1p)
-params = {}
-params['learning_rate'] = 0.07
-params['boosting_type'] = 'gbdt'
-params['objective'] = 'regression'
-params['metric'] = 'rmse'
-params['sub_feature'] = 0.5
-params['num_leaves'] = 10
-params['min_data'] = 50
-params['max_depth'] = 10
 
-model = lgb.train(params, d_train, 100)
+xgbr = xgb.XGBRegressor()
 
-    
+# 1
+# params = {'learning_rate': [0.02], 'n_estimators' : [2000], 'max_depth':[3], 
+#           'colsample_bytree' : [0.4], 'subsample' : [0.7]}
+
+# 2
+# params = {'learning_rate': [0.015, 0.02, 0.025], 'n_estimators' : [1500,2000,2500], 
+#           'max_depth':[3,4,5], 'colsample_bytree' : [0.3,0.4,0.5], 'subsample' : [0.6,0.7,0.8]}
+#Best params:{'colsample_bytree': 0.5, 'learning_rate': 0.02, 'max_depth': 3, 'n_estimators': 2500, 'subsample': 0.7}
+
+# 3
+params = {'learning_rate': [0.018, 0.02, 0.022], 'n_estimators' : [2200,2500,2700], 
+          'max_depth':[2,3,4], 'colsample_bytree' : [0.5,0.6,0.7], 'subsample' : [0.65,0.70,0.75]}
+
+# other
+# params = {
+#     'xgb_regressor__objective': ['reg:gamma'], # 'reg:squarederror', 'reg:squaredlogerror'
+#     'xgb_regressor__learning_rate': [0.01],
+#     'xgb_regressor__n_estimators': [7900, 8000, 8100],
+#     'xgb_regressor__max_depth': [11, 12, 13],
+#     'xgb_regressor__booster': ['gbtree'],
+#     'xgb_regressor__min_child_weight': [1.5],
+#     'xgb_regressor__gamma': [0],
+#     'xgb_regressor__subsample': [0.2],
+#     'xgb_regressor__reg_alpha': [0, 0.9, 1],
+#     'xgb_regressor__reg_lambda': [1, 0.3],
+# }
+
+
+model = GridSearchCV(xgbr, params, cv = 5, n_jobs =1)
+model.fit(X_train_fitted,Y_train_Log1p)
+
+
+print("Best params:{}".format(model.best_params_))
+model = model.best_estimator_
+
+
 from sklearn.metrics import mean_squared_error, r2_score
   
 Y_train_model=Y_train_Log1p
@@ -218,10 +236,10 @@ print('Coefficient of determination R2 Train: %.2f'
 
 #Test
 print('Mean squared error Test: %.2f'
-      % mean_squared_error(Y_test_model, model.predict(X_test_fitted, predict_disable_shape_check=True)))
+      % mean_squared_error(Y_test_model, model.predict(X_test_fitted)))
 # The coefficient of determination: 1 is perfect prediction
 print('Coefficient of determination R2 Test: %.2f'
-      % r2_score(Y_test_model, model.predict(X_test_fitted, predict_disable_shape_check=True)))
+      % r2_score(Y_test_model, model.predict(X_test_fitted)))
 
 
 X_test['predict']=np.expm1(model.predict(X_test_fitted))
@@ -268,22 +286,3 @@ out=df_val['SalePrice']
 out.to_csv(path_or_buf=full_path+"\\result.csv",index=True)
 
 
-
-
-
-# other things
-# features_to_remove = ['address','attributes','business_id','categories','city','hours','is_open','latitude','longitude','name','neighborhood','postal_code','state','time']
-# df.drop(labels=features_to_remove, axis=1, inplace=True)()
-
-# sorted(list(zip(['average_review_length','average_review_age'],model.coef_)),key = lambda x: abs(x[1]),reverse=True)
-
-# pd.DataFrame(list(zip(features.columns,features.describe().loc['mean'],features.describe().loc['min'],features.describe().loc['max'])),columns=['Feature','Mean','Min','Max'])
-
-
-
-# var_list = ["CreditScore","Age","Tenure","Balance","NumOfProducts","EstimatedSalary","Exited"]
-# sns.heatmap(churn_data[var_list].corr(), annot = True)
-# plt.title("Correlation Matrix")
-# plt.tight_layout()
-# plt.show()
-# plt.clf()

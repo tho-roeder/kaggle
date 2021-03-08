@@ -1,0 +1,3 @@
+- for OneHotEncoding/Ordinal encoding it is best to use make_column_transformer object as this is applicable to train/validation (no data leakage); dummy encoder not good as features may not be available
+- for tranformation and model application best to use data pipeline
+- Optuna works similar to GridSearch algorithm. What I like more about this one is that it gives me the opportunity to set a "search range" instead of me having to declare values one by one for it to search from. I also feel it works faster compared to GridSearch.

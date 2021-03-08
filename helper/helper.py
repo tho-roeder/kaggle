@@ -360,3 +360,17 @@ def create_flags(x):
         return 'N'
     else:
         return 'O'
+
+
+def create_log_var(df, num_var):
+    #import seaborn as sns
+    apply_value_log=[]
+    from scipy.stats import skew
+    skewed_feats = df[num_var].apply(lambda x: skew(x.dropna())).sort_values(ascending=False)
+    for i in skewed_feats.index:
+        if skewed_feats[i]>=0.7:
+            #   sns.displot(df[i])
+            df['log_'+i]=np.log1p(df[i])
+            # sns.displot(df['log_'+i])
+            apply_value_log.append(i)
+    return apply_value_log
