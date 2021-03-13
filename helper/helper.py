@@ -332,8 +332,15 @@ def get_bins(df,var,nbr_bins):
 def get_var_value_counts(df,var):
     lst_var_with_value_counts=[]
     for i in var:
-        lst_var_with_value_counts.append([i, len(list(df[i].value_counts().index)),list(df[i].value_counts().index)])
+        lst_var_with_value_counts.append([i, len(list(df[i].value_counts().index)),list(df[i].value_counts().index),list(df[i].value_counts())])
     return lst_var_with_value_counts
+
+
+# def get_var_value_counts(df,var):
+#     lst_var_with_value_counts=[]
+#     for i in var:
+#         lst_var_with_value_counts.append([i, len(list(df[i].value_counts().index)),list(df[i].value_counts().index)])
+#     return lst_var_with_value_counts
 
 
 # def create_flags(x):
@@ -363,7 +370,7 @@ def create_flags(x):
 
 
 def create_log_var(df, num_var):
-    import pandas as pd
+    #do not create from negative variables
     import numpy as np
     #import seaborn as sns
     apply_value_log=[]
@@ -376,3 +383,14 @@ def create_log_var(df, num_var):
             # sns.displot(df['log_'+i])
             apply_value_log.append(i)
     return apply_value_log
+
+
+def replace_value(x, value):
+    #can be used in lambda
+    import numpy as np
+    if x == value:
+        x=np.nan
+    else:
+        x=x
+    return x
+
