@@ -1,12 +1,12 @@
 # Repo to gather Kaggle work
 
-1) titanic: https://www.kaggle.com/c/titanic
+1) binary:titanic: https://www.kaggle.com/c/titanic
 
-2) house prices: https://www.kaggle.com/c/house-prices-advanced-regression-techniques/
+2) regression:house prices: https://www.kaggle.com/c/house-prices-advanced-regression-techniques/
 
-3) safe driver: https://www.kaggle.com/c/porto-seguro-safe-driver-prediction/
+3) probability:safe driver: https://www.kaggle.com/c/porto-seguro-safe-driver-prediction/
 
-4) next: nlp: https://www.kaggle.com/c/nlp-getting-started/
+4) binary:nlp: https://www.kaggle.com/c/nlp-getting-started/
 
 5) next: home credit default risk: https://www.kaggle.com/c/home-credit-default-risk/data
 

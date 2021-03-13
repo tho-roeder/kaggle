@@ -32,4 +32,4 @@ from sklearn.feature_selection import VarianceThreshold
 18) interactions
 19) assign weights --> lightGBM
 20) #https://lightgbm.readthedocs.io/en/latest/pythonapi/lightgbm.train.html model = lgb.train(params, d_train, 100)
-
+21) mutliclass target
