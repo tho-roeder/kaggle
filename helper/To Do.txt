@@ -1,35 +1,32 @@
-01) Standardize and normalize values : improve helper function for normalization and standardization
-02) RandomizedSearchCV vs. GridSearchCV vs. Optuna (import optuna)
-03) review import of helper.py
-04) for binary: CART - CLASSIFICATION TREE / RANDOM FOREST
-05) drop first in oneHotEncoding even if errors
-06) One hot maintain variable names: #pd.DataFrame(ohe.transform(x_test).toarray(), columns = ohe.get_feature_names())
-07) model ensembling/stack
-08) cross_validate: from sklearn.model_selection import cross_val_score
-09) PCA 
-10) Cluster
-11) predict value within data set to better impute 
-12) review copied notebooks
-13) docker & AWS
-14) solve warning in code
-15) check loc and iloc
-16) 
-from sklearn.inspection import permutation_importance
-from lightgbm import LGBMRegressor
-import optuna
-from mlxtend.regressor import StackingCVRegressor
+1. Regression
+Review notebooks
+2. Binary Classification 
+3. Multi Classification
+4. Text
+5. Picture
+
+to do:
+01) drop first in oneHotEncoding even if errors
+02) Fix Catboost issues
+03) package and put to cloud/docker & AWS
+04) review stacking, differences between 
+	from mlxtend.regressor import StackingRegressor 
+	from sklearn.ensemble import StackingRegressor as stack
+05) review import of helper.py
+06) more on cross_validate: from sklearn.model_selection import cross_val_score
+07) test split vs. cross validate
+08) PCA 
+09) Cluster
+10) Classification
+11) try the experimental version: predict value within data set to better impute 
 from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer
-from sklearn.preprocessing import StandardScaler, OneHotEncoder, PowerTransformer
-from sklearn.model_selection import cross_val_score, KFold
-from sklearn.linear_model import LinearRegression, Lasso, Ridge
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.svm import SVR
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.pipeline import Pipeline, FeatureUnion
-from sklearn.feature_selection import VarianceThreshold
-17) XGBoost and LightGBM hyperparameter
-18) interactions
-19) assign weights --> lightGBM
-20) #https://lightgbm.readthedocs.io/en/latest/pythonapi/lightgbm.train.html model = lgb.train(params, d_train, 100)
-21) mutliclass target
+12) check loc and iloc
+13) from sklearn.inspection import permutation_importance
+14) import optuna
+15) KFold, StratifiedKfold
+16) hyperparameter regressor
+17) assign weights --> lightGBM
+18) #https://lightgbm.readthedocs.io/en/latest/pythonapi/lightgbm.train.html model = lgb.train(params, d_train, 100)
+19) mutliclass target
+20) Add code for A/B testing 

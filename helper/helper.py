@@ -232,8 +232,10 @@ def same_value(df,var,max_perc_rep):
 
 
 def Standardize_values(df):
+    # https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
+    # transform to same mean and same standard deviation
     from sklearn.preprocessing import StandardScaler
-    SC = StandardScaler(with_mean=False)
+    SC = StandardScaler()
     SC.fit(df)
     return SC
 
@@ -385,6 +387,22 @@ def create_log_var(df, num_var):
     return apply_value_log
 
 
+def create_log_var_v2(df, num_var, factor=0.5):
+    #do not create from negative variables
+    import numpy as np
+    #import seaborn as sns
+    apply_value_log=[]
+    from scipy.stats import skew
+    skewed_feats = df[num_var].apply(lambda x: skew(x.dropna())).sort_values(ascending=False)
+    for i in skewed_feats.index:
+        if skewed_feats[i]>=factor: #0.5 or 0.7
+            #   sns.displot(df[i])
+            df['log_'+i]=np.log1p(df[i])
+            # sns.displot(df['log_'+i])
+            apply_value_log.append(i)
+    return apply_value_log
+
+
 def replace_value(x, value):
     #can be used in lambda
     import numpy as np
@@ -394,3 +412,188 @@ def replace_value(x, value):
         x=x
     return x
 
+
+def pre_eval_models(type_model, scoring, independent, dependent, cv):
+    from sklearn.model_selection import cross_val_score
+    
+    out=[]
+    if type_model=='regression':
+        from xgboost import XGBRegressor
+        from lightgbm import LGBMRegressor
+        from sklearn.svm import SVR
+        
+        from sklearn.linear_model import ElasticNet
+        from sklearn.linear_model import LinearRegression
+        from sklearn.linear_model import Lasso        
+        #from sklearn.linear_model import LassoCV
+        from sklearn.linear_model import LassoLars
+        from sklearn.linear_model import Ridge
+        #from sklearn.linear_model import RidgeCV
+        from sklearn.linear_model import BayesianRidge
+        #from sklearn.linear_model import TweedieRegressor
+        #from sklearn.linear_model import SGDClassifier
+        from sklearn.linear_model import RANSACRegressor
+        from sklearn.linear_model import SGDRegressor
+        
+        from sklearn.neighbors import KNeighborsRegressor
+        
+        from catboost import CatBoostRegressor
+        from sklearn.ensemble import AdaBoostRegressor
+        from sklearn.ensemble import BaggingRegressor
+        from sklearn.ensemble import ExtraTreesRegressor
+        from sklearn.ensemble import GradientBoostingRegressor
+        from sklearn.ensemble import RandomForestRegressor
+        # from sklearn.ensemble import StackingRegressor
+        # from sklearn.ensemble import VotingRegressor
+        # from sklearn.ensemble import HistGradientBoostingRegressor
+        
+        lst_models=[XGBRegressor(),LGBMRegressor(),SVR()
+                    ,ElasticNet(),LinearRegression(),Lasso(),LassoLars(),Ridge()
+                    ,BayesianRidge(),RANSACRegressor(),SGDRegressor(),KNeighborsRegressor()
+                    ,CatBoostRegressor(),AdaBoostRegressor(),BaggingRegressor(),ExtraTreesRegressor()
+                    ,GradientBoostingRegressor(),RandomForestRegressor() #,StackingRegressor(), VotingRegressor()
+                    # ,HistGradientBoostingRegressor()
+                    ]
+    if type_model=='classification':
+        from sklearn.linear_model import LogisticRegression 
+        #from sklearn.linear_model import LogisticRegressionCV
+        from sklearn.linear_model import Perceptron                           
+        from sklearn.neighbors import KNeighborsClassifier
+        from sklearn.tree import DecisionTreeClassifier
+        
+        from xgboost.sklearn import XGBClassifier
+        from sklearn import SVM 
+        from sklearn.svm import LinearSVC
+        
+        from catboost import CatBoostClassifier
+        from sklearn.ensemble import AdaBoostRegressor
+        from sklearn.ensemble import BaggingClassifier
+        from sklearn.ensemble import ExtraTreesClassifier
+        from sklearn.ensemble import GradientBoostingClassifier
+        from sklearn.ensemble import RandomForestClassifier
+        # from sklearn.ensemble import StackingClassifier
+        # from sklearn.ensemble import VotingClassifier
+        # from sklearn.ensemble import HistGradientBoostingClassifier
+        
+        lst_models=[LogisticRegression(), Perceptron(), KNeighborsClassifier(), DecisionTreeClassifier()
+             ,XGBClassifier(), SVM(), LinearSVC()
+             ,CatBoostClassifier(),AdaBoostRegressor(),BaggingClassifier(),ExtraTreesClassifier()
+             ,GradientBoostingClassifier(),RandomForestClassifier() #,StackingClassifier(),VotingClassifier()
+             # ,HistGradientBoostingClassifier()
+             ] 
+    for model in lst_models:
+        scores = cross_val_score(model, independent, dependent, scoring=scoring, cv=cv)
+        out.append([str(model),scores.mean(), scores.std()])
+    sort=sorted(out,key=lambda x: x[1],reverse=True)
+    return sort
+
+
+def evaluate_model(model_type, model, X, y_true):
+    #OV: https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics
+    if model_type=='regression':
+        import numpy as np
+        from sklearn import metrics
+        from sklearn.model_selection import cross_val_score
+        from sklearn.model_selection import cross_validate
+        
+        # cv_scr = cross_val_score(model, X, y_true, cv=5)
+        # print('CV Score:', cv_scr.mean())
+        
+        cv = cross_validate(model, X, y_true, 
+                            scoring=['r2', 'neg_mean_absolute_error', 'neg_mean_squared_error'], cv=2)
+        mse_score = np.sqrt(-1 * cv['test_neg_mean_squared_error'].mean())
+        mse_std = np.sqrt(cv['test_neg_mean_squared_error'].std())
+        mae_score = -1 * cv['test_neg_mean_absolute_error'].mean()
+        mae_std = cv['test_neg_mean_absolute_error'].std()
+        r2_score_mean = cv['test_r2'].mean()
+        r2_std = cv['test_r2'].std()
+        print('CV RMSE: %.4f (%.4f)' % (mse_score, mse_std))
+        print('CV MAE: %.4f (%.4f)' % (mae_score, mae_std))
+        print('CV R^2: %.4f (%.4f)' % (r2_score_mean, r2_std))
+        
+        y_pred=model.predict(X)
+        mae = metrics.mean_absolute_error(y_true, y_pred)
+        mse = metrics.mean_squared_error(y_true, y_pred)
+        rmse = np.sqrt(metrics.mean_squared_error(y_true, y_pred))
+        r2_square = metrics.r2_score(y_true, y_pred)
+        neg_rmsle = -1 * np.sqrt(metrics.mean_squared_log_error(y_true, np.abs(y_pred)))
+        print('MAE:', mae)
+        print('MSE:', mse)
+        print('RMSE:', rmse)
+        print('R2 Square', r2_square)
+        print('Negative RMSLE', neg_rmsle)        
+        
+        
+    if model_type=='classification':
+        from sklearn.metrics import classification_report
+        y_pred=model.predict(X)
+        classification_report(y_true=y_true,y_pred=y_pred)
+        
+        from sklearn.metrics import f1_score
+        f1_score(y_true, y_pred)
+        
+        from sklearn.metrics import log_loss     
+        log_loss(y_true, y_pred)
+        
+        from sklearn.metrics import  confusion_matrix
+        confusion_matrix(y_true, y_pred)
+        
+        from sklearn.metrics import accuracy_score
+        #https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score
+        #Percentage of correct classification
+        accuracy_score(y_true, y_pred)
+        
+        from sklearn.metrics import roc_curve, auc
+        #https://scikit-learn.org/stable/modules/generated/sklearn.metrics.auc.html#sklearn.metrics.auc
+        fpr, tpr, thresholds = roc_curve(y_true, y_pred, pos_label=2)
+        auc(fpr, tpr)
+        
+    # if 'multilabel':
+        
+    # if 'clustering':
+
+
+def determine_skewed_var(df, num_var, factor=0.5):
+    out=[]
+    from scipy.stats import skew
+    skewed_feats = df[num_var].apply(lambda x: skew(x.dropna())).sort_values(ascending=False)
+    for i in skewed_feats.index:
+        if skewed_feats[i]>=factor: #0.5 or 0.7
+            out.append(i)
+    return out
+
+
+def create_normalized_skew_var(df,num_var):
+    #https://www.youtube.com/watch?v=ev7wkRL8OUk
+    #https://docs.scipy.org/doc/scipy/reference/stats.html
+    #Unlike boxcox, yeojohnson does not require the input data to be positive.
+    #Use case: especially for linear models, tree model should not get improved
+    #Do not use: stats.yeojohnson (no inverse_transform)
+    #in case of single var: pt.fit_transform(df['SalePrice'].to_numpy().reshape(-1,1))
+    
+    from  sklearn.preprocessing import PowerTransformer
+    pt=PowerTransformer()
+    pt.fit_transform(df[num_var])
+    return pt
+
+
+def sel_reg_model_features_v2(model,X_train_trans,Y_train,X_test_trans,Y_test,step,min_features_to_select):
+    from sklearn.feature_selection import RFECV
+    print('step: ', step)
+    print('min_features_to_select: ', min_features_to_select)
+    
+    best_model=RFECV(estimator=model
+          ,step=step
+          ,min_features_to_select=min_features_to_select
+          ,cv=3
+          ,scoring='r2'
+          ,verbose=0
+          ,n_jobs=-1)
+    best_model.fit(X_train_trans,Y_train)
+    print(best_model.score(X_test_trans,Y_test))
+    return best_model
+
+
+def neg_rmsle(y_true, y_pred):
+    y_pred = np.abs(y_pred)
+    return -1 * np.sqrt(mean_squared_log_error(y_true, y_pred))

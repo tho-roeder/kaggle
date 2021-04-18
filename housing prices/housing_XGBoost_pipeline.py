@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+#Exterior1st: Exterior covering on house: AsbShng	Asbestos Shingles
+#Exterior2nd: Exterior covering on house (if more than one material): AsbShng	Asbestos Shingles
+
 
 ### 1. import helper
 import os
@@ -194,9 +197,33 @@ from sklearn.model_selection import cross_val_score, GridSearchCV, KFold, Random
 
 
 xgbr = xgb.XGBRegressor()
-
+# 1
 params = {'learning_rate': [0.02], 'n_estimators' : [2000], 'max_depth':[3], 
           'colsample_bytree' : [0.4], 'subsample' : [0.7]}
+
+# 2
+# params = {'learning_rate': [0.015, 0.02, 0.025], 'n_estimators' : [1500,2000,2500], 
+#           'max_depth':[3,4,5], 'colsample_bytree' : [0.3,0.4,0.5], 'subsample' : [0.6,0.7,0.8]}
+#Best params:{'colsample_bytree': 0.5, 'learning_rate': 0.02, 'max_depth': 3, 'n_estimators': 2500, 'subsample': 0.7}
+
+# 3
+# params = {'learning_rate': [0.018, 0.02, 0.022], 'n_estimators' : [2200,2500,2700], 
+#           'max_depth':[2,3,4], 'colsample_bytree' : [0.5,0.6,0.7], 'subsample' : [0.65,0.70,0.75]}
+#Best params:{'colsample_bytree': 0.6, 'learning_rate': 0.02, 'max_depth': 4, 'n_estimators': 2200, 'subsample': 0.65}
+
+# other
+# params = {
+#     'xgb_regressor__objective': ['reg:gamma'], # 'reg:squarederror', 'reg:squaredlogerror'
+#     'xgb_regressor__learning_rate': [0.01],
+#     'xgb_regressor__n_estimators': [7900, 8000, 8100],
+#     'xgb_regressor__max_depth': [11, 12, 13],
+#     'xgb_regressor__booster': ['gbtree'],
+#     'xgb_regressor__min_child_weight': [1.5],
+#     'xgb_regressor__gamma': [0],
+#     'xgb_regressor__subsample': [0.2],
+#     'xgb_regressor__reg_alpha': [0, 0.9, 1],
+#     'xgb_regressor__reg_lambda': [1, 0.3],
+# }
 
 
 model = GridSearchCV(xgbr, params, cv = 5, n_jobs =1)
