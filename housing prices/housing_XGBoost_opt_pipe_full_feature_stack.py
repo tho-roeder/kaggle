@@ -1,7 +1,3 @@
-## how to passthough steps
-## 
-
-
 ### 1. import helper
 import os
 path="C:\\Users\\thoma\\Desktop\\VM share\\Python\\Kaggle\\helper"

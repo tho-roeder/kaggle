@@ -1,6 +1,0 @@
-- for OneHotEncoding/Ordinal encoding it is best to use make_column_transformer object as this is applicable to train/validation (no data leakage); dummy encoder not good as features may not be available
-- for tranformation and model application best to use data pipeline
-- Optuna works similar to GridSearch algorithm. What I like more about this one is that it gives me the opportunity to set a "search range" instead of me having to declare values one by one for it to search from. I also feel it works faster compared to GridSearch.
-- For most of machine learning algorithms, especially linear models, normally distributed features gives us better results. (Tree based algorithms don't need it)
-- Instead of using sklearn's StackingRegressor or mlxtend's StackingCVRegressor, I just use the codes in below. Because, while you use LGBMRegressor and XGBRegressor, you need to set early stopping rounds in fit params to prevent overfitting. Sklearn's StackingRegressor doesn't give the opportunity to setting an estimator's fit parameters (or it gives, I don't know), and that's why I will use the scratch in below.
-- You should choose RandomizedSearch over GridSearch. (Unless you just want to tune very few hyper-parameters.) For a huge dataset (≥ 100,000 records with more than 100 features), BayesSearch can search the optimal set of hype-parameters more efficiently.
