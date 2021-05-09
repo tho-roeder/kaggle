@@ -101,10 +101,22 @@ def getGeneralInformation(df):
         temp_col = df[col].isnull().sum()
         print(f'{col}: {temp_col}')
 
+
 def getMissingValues(df):
+    print("missing values:")
     for col in df.columns:
-        temp_col = df[col].isnull().sum()
-        print(f'{col}: {temp_col}')
+        if df[col].isnull().sum()>0:
+            temp_col = df[col].isnull().sum()
+            print(f'{col}: {temp_col}')
+
+
+def getNegativeValues(df):
+    print("negative values:")
+    for col in df.columns:
+        if df[col].dtypes != 'object':
+            if df[df[col]<0][col].count().sum() >0:
+                temp_col = df[df[col]<0][col].count().sum()
+                print(f'{col}: {temp_col}')
 
 
 def pre_work(df):
@@ -176,6 +188,13 @@ def get_scatter_for_target(df,var,target):
         plt.title("{} vs {}".format(i,target))
         plt.show()
         plt.clf()
+
+
+def plot_Outlier(df):
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    plt.figure(figsize=(18,25))
+    sns.boxplot(data=df, orient="h")
 
 
 def impute_var(df,var,perc_drop,style):
@@ -591,12 +610,19 @@ def pre_eval_models(type_model, scoring, independent, dependent, cv):
         from sklearn.neural_network import MLPClassifier
         
         lst_models=[LogisticRegression(), LGBMClassifier(), Perceptron(), KNeighborsClassifier(), DecisionTreeClassifier()
-             ,XGBClassifier(use_label_encoder=False, silent=True)#, SVM(), LinearSVC()
+             ,XGBClassifier(use_label_encoder=False, eval_metric='mlogloss', silent=True)#, SVM(), LinearSVC()
              ,CatBoostClassifier(verbose=False),AdaBoostRegressor(),BaggingClassifier(),ExtraTreesClassifier()
              ,GradientBoostingClassifier(),RandomForestClassifier() 
              #,VotingClassifier()# ,HistGradientBoostingClassifier()
              ,GaussianNB(),MLPClassifier()
              ] 
+    if type_model=='multiclass':
+        from sklearn.naive_bayes import MultinomialNB
+        from xgboost.sklearn import XGBClassifier
+        from lightgbm import LGBMClassifier
+        lst_models=[MultinomialNB(),XGBClassifier(use_label_encoder=False, eval_metric='mlogloss')
+                    ,LGBMClassifier()]
+                
     for model in lst_models:
         scores = cross_val_score(model, independent, dependent, scoring=scoring, cv=cv)
         out.append([str(model),scores.mean(), scores.std()])
