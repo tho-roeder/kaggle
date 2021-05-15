@@ -6,6 +6,7 @@
 # %run helper.py
 
 
+### nlp
 def get_nlp_helper():
     #stopwords
     stopwords_git=["'ll","'tis","'twas","'ve","10","39","a","a's","able","ableabout","about","above","abroad","abst","accordance","according","accordingly","across","act","actually","ad","added","adj","adopted","ae","af","affected","affecting","affects","after","afterwards","ag","again","against","ago","ah","ahead","ai","ain't","aint","al","all","allow","allows","almost","alone","along","alongside","already","also","although","always","am","amid","amidst","among","amongst","amoungst","amount","an","and","announce","another","any","anybody","anyhow","anymore","anyone","anything","anyway","anyways","anywhere","ao","apart","apparently","appear","appreciate","appropriate","approximately","aq","ar","are","area","areas","aren","aren't","arent","arise","around","arpa","as","aside","ask","asked","asking","asks","associated","at","au","auth","available","aw","away","awfully","az","b","ba","back","backed","backing","backs","backward","backwards","bb","bd","be","became","because","become","becomes","becoming","been","before","beforehand","began","begin","beginning","beginnings","begins","behind","being","beings","believe","below","beside","besides","best","better","between","beyond","bf","bg","bh","bi","big","bill","billion","biol","bj","bm","bn","bo","both","bottom","br","brief","briefly","bs","bt","but","buy","bv","bw","by","bz","c","c'mon","c's","ca","call","came","can","can't","cannot","cant","caption","case","cases","cause","causes","cc","cd","certain","certainly","cf","cg","ch","changes","ci","ck","cl","clear","clearly","click","cm","cmon","cn","co","co.","com","come","comes","computer","con","concerning","consequently","consider","considering","contain","containing","contains","copy","corresponding","could","could've","couldn","couldn't","couldnt","course","cr","cry","cs","cu","currently","cv","cx","cy","cz","d","dare","daren't","darent","date","de","dear","definitely","describe","described","despite","detail","did","didn","didn't","didnt","differ","different","differently","directly","dj","dk","dm","do","does","doesn","doesn't","doesnt","doing","don","don't","done","dont","doubtful","down","downed","downing","downs","downwards","due","during","dz","e","each","early","ec","ed","edu","ee","effect","eg","eh","eight","eighty","either","eleven","else","elsewhere","empty","end","ended","ending","ends","enough","entirely","er","es","especially","et","et-al","etc","even","evenly","ever","evermore","every","everybody","everyone","everything","everywhere","ex","exactly","example","except","f","face","faces","fact","facts","fairly","far","farther","felt","few","fewer","ff","fi","fifteen","fifth","fifty","fify","fill","find","finds","fire","first","five","fix","fj","fk","fm","fo","followed","following","follows","for","forever","former","formerly","forth","forty","forward","found","four","fr","free","from","front","full","fully","further","furthered","furthering","furthermore","furthers","fx","g","ga","gave","gb","gd","ge","general","generally","get","gets","getting","gf","gg","gh","gi","give","given","gives","giving","gl","gm","gmt","gn","go","goes","going","gone","good","goods","got","gotten","gov","gp","gq","gr","great","greater","greatest","greetings","group","grouped","grouping","groups","gs","gt","gu","gw","gy","h","had","hadn't","hadnt","half","happens","hardly","has","hasn","hasn't","hasnt","have","haven","haven't","havent","having","he","he'd","he'll","he's","hed","hell","hello","help","hence","her","here","here's","hereafter","hereby","herein","heres","hereupon","hers","herself","herse”","hes","hi","hid","high","higher","highest","him","himself","himse”","his","hither","hk","hm","hn","home","homepage","hopefully","how","how'd","how'll","how's","howbeit","however","hr","ht","htm","html","http","hu","hundred","i","i'd","i'll","i'm","i've","i.e.","id","ie","if","ignored","ii","il","ill","im","immediate","immediately","importance","important","in","inasmuch","inc","inc.","indeed","index","indicate","indicated","indicates","information","inner","inside","insofar","instead","int","interest","interested","interesting","interests","into","invention","inward","io","iq","ir","is","isn","isn't","isnt","it","it'd","it'll","it's","itd","itll","its","itself","itse”","ive","j","je","jm","jo","join","jp","just","k","ke","keep","keeps","kept","keys","kg","kh","ki","kind","km","kn","knew","know","known","knows","kp","kr","kw","ky","kz","l","la","large","largely","last","lately","later","latest","latter","latterly","lb","lc","least","length","less","lest","let","let's","lets","li","like","liked","likely","likewise","line","little","lk","ll","long","longer","longest","look","looking","looks","low","lower","lr","ls","lt","ltd","lu","lv","ly","m","ma","made","mainly","make","makes","making","man","many","may","maybe","mayn't","maynt","mc","md","me","mean","means","meantime","meanwhile","member","members","men","merely","mg","mh","microsoft","might","might've","mightn't","mightnt","mil","mill","million","mine","minus","miss","mk","ml","mm","mn","mo","more","moreover","most","mostly","move","mp","mq","mr","mrs","ms","msie","mt","mu","much","mug","must","must've","mustn't","mustnt","mv","mw","mx","my","myself","myse”","mz","n","na","name","namely","nay","nc","nd","ne","near","nearly","necessarily","necessary","need","needed","needing","needn't","neednt","needs","neither","net","netscape","never","neverf","neverless","nevertheless","new","newer","newest","next","nf","ng","ni","nine","ninety","nl","no","no-one","nobody","non","none","nonetheless","noone","nor","normally","nos","not","noted","nothing","notwithstanding","novel","now","nowhere","np","nr","nu","null","number","numbers","nz","o","obtain","obtained","obviously","of","off","often","oh","ok","okay","old","older","oldest","om","omitted","on","once","one","one's","ones","only","onto","open","opened","opening","opens","opposite","or","ord","order","ordered","ordering","orders","org","other","others","otherwise","ought","oughtn't","oughtnt","our","ours","ourselves","out","outside","over","overall","owing","own","p","pa","page","pages","part","parted","particular","particularly","parting","parts","past","pe","per","perhaps","pf","pg","ph","pk","pl","place","placed","places","please","plus","pm","pmid","pn","point","pointed","pointing","points","poorly","possible","possibly","potentially","pp","pr","predominantly","present","presented","presenting","presents","presumably","previously","primarily","probably","problem","problems","promptly","proud","provided","provides","pt","put","puts","pw","py","q","qa","que","quickly","quite","qv","r","ran","rather","rd","re","readily","really","reasonably","recent","recently","ref","refs","regarding","regardless","regards","related","relatively","research","reserved","respectively","resulted","resulting","results","right","ring","ro","room","rooms","round","ru","run","rw","s","sa","said","same","saw","say","saying","says","sb","sc","sd","se","sec","second","secondly","seconds","section","see","seeing","seem","seemed","seeming","seems","seen","sees","self","selves","sensible","sent","serious","seriously","seven","seventy","several","sg","sh","shall","shan't","shant","she","she'd","she'll","she's","shed","shell","shes","should","should've","shouldn","shouldn't","shouldnt","show","showed","showing","shown","showns","shows","si","side","sides","significant","significantly","similar","similarly","since","sincere","site","six","sixty","sj","sk","sl","slightly","sm","small","smaller","smallest","sn","so","some","somebody","someday","somehow","someone","somethan","something","sometime","sometimes","somewhat","somewhere","soon","sorry","specifically","specified","specify","specifying","sr","st","state","states","still","stop","strongly","su","sub","substantially","successfully","such","sufficiently","suggest","sup","sure","sv","sy","system","sz","t","t's","take","taken","taking","tc","td","tell","ten","tends","test","text","tf","tg","th","than","thank","thanks","thanx","that","that'll","that's","that've","thatll","thats","thatve","the","their","theirs","them","themselves","then","thence","there","there'd","there'll","there're","there's","there've","thereafter","thereby","thered","therefore","therein","therell","thereof","therere","theres","thereto","thereupon","thereve","these","they","they'd","they'll","they're","they've","theyd","theyll","theyre","theyve","thick","thin","thing","things","think","thinks","third","thirty","this","thorough","thoroughly","those","thou","though","thoughh","thought","thoughts","thousand","three","throug","through","throughout","thru","thus","til","till","tip","tis","tj","tk","tm","tn","to","today","together","too","took","top","toward","towards","tp","tr","tried","tries","trillion","truly","try","trying","ts","tt","turn","turned","turning","turns","tv","tw","twas","twelve","twenty","twice","two","tz","u","ua","ug","uk","um","un","under","underneath","undoing","unfortunately","unless","unlike","unlikely","until","unto","up","upon","ups","upwards","us","use","used","useful","usefully","usefulness","uses","using","usually","uucp","uy","uz","v","va","value","various","vc","ve","versus","very","vg","vi","via","viz","vn","vol","vols","vs","vu","w","want","wanted","wanting","wants","was","wasn","wasn't","wasnt","way","ways","we","we'd","we'll","we're","we've","web","webpage","website","wed","welcome","well","wells","went","were","weren","weren't","werent","weve","wf","what","what'd","what'll","what's","what've","whatever","whatll","whats","whatve","when","when'd","when'll","when's","whence","whenever","where","where'd","where'll","where's","whereafter","whereas","whereby","wherein","wheres","whereupon","wherever","whether","which","whichever","while","whilst","whim","whither","who","who'd","who'll","who's","whod","whoever","whole","wholl","whom","whomever","whos","whose","why","why'd","why'll","why's","widely","width","will","willing","wish","with","within","without","won","won't","wonder","wont","words","work","worked","working","works","world","would","would've","wouldn","wouldn't","wouldnt","ws","www","x","y","ye","year","years","yes","yet","you","you'd","you'll","you're","you've","youd","youll","young","younger","youngest","your","youre","yours","yourself","yourselves","youve","yt","yu","z","za","zero","zm","zr"]
@@ -102,6 +103,17 @@ def getGeneralInformation(df):
         print(f'{col}: {temp_col}')
 
 
+### general
+def find_var(df,pattern):
+    import re
+    sel=[]
+    for i in df.columns:
+        if re.findall(pattern,i)!=[]:
+            #print(i)
+            sel.append(i)
+    return sel
+
+
 def getMissingValues(df):
     print("missing values:")
     for col in df.columns:
@@ -195,6 +207,7 @@ def plot_Outlier(df):
     import seaborn as sns
     plt.figure(figsize=(18,25))
     sns.boxplot(data=df, orient="h")
+    plt.show()
 
 
 def impute_var(df,var,perc_drop,style):
@@ -343,20 +356,28 @@ def same_value(df,var,max_perc_rep):
     return drop_list_max_perc_rep
 
 
-def Standardize_values(df):
-    # https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
-    # transform to same mean and same standard deviation
-    from sklearn.preprocessing import StandardScaler
-    SC = StandardScaler()
-    SC.fit(df)
-    return SC
+def transformer(df,var,transformer,prefix):
+    df_copy=df.copy()
+    for i in var:
+        t=transformer
+        df_copy[prefix+"_"+str(i)]=t.fit_transform(df_copy[i].to_numpy().reshape(-1,1))
+    return df_copy
 
 
-def Normalize_values(df):
-    from sklearn.preprocessing import Normalizer
-    transformer = Normalizer().fit(df)
-    transformer.fit(df)
-    return transformer
+# def Standardize_values(df):
+#     # https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
+#     # transform to same mean and same standard deviation
+#     from sklearn.preprocessing import StandardScaler
+#     SC = StandardScaler()
+#     SC.fit(df)
+#     return SC
+
+
+# def Normalize_values(df):
+#     from sklearn.preprocessing import Normalizer
+#     transformer = Normalizer().fit(df)
+#     transformer.fit(df)
+#     return transformer
 
 
 def intersection(lst1, lst2): 
@@ -620,8 +641,9 @@ def pre_eval_models(type_model, scoring, independent, dependent, cv):
         from sklearn.naive_bayes import MultinomialNB
         from xgboost.sklearn import XGBClassifier
         from lightgbm import LGBMClassifier
+        from catboost import CatBoostClassifier
         lst_models=[MultinomialNB(),XGBClassifier(use_label_encoder=False, eval_metric='mlogloss')
-                    ,LGBMClassifier()]
+                    ,LGBMClassifier(),CatBoostClassifier()]
                 
     for model in lst_models:
         scores = cross_val_score(model, independent, dependent, scoring=scoring, cv=cv)
@@ -744,3 +766,169 @@ def sel_reg_model_features_v2(model,X_train_trans,Y_train,X_test_trans,Y_test,st
 def neg_rmsle(y_true, y_pred):
     y_pred = np.abs(y_pred)
     return -1 * np.sqrt(mean_squared_log_error(y_true, y_pred))
+
+
+# the functions:
+def stratified_sample(df, strata, size=None, seed=None, keep_index= True):
+    '''
+    source: https://www.kaggle.com/flaviobossolan/stratified-sampling-python
+    It samples data from a pandas dataframe using strata. These functions use
+    proportionate stratification:
+    n1 = (N1/N) * n
+    where:
+        - n1 is the sample size of stratum 1
+        - N1 is the population size of stratum 1
+        - N is the total population size
+        - n is the sampling size
+    Parameters
+    ----------
+    :df: pandas dataframe from which data will be sampled.
+    :strata: list containing columns that will be used in the stratified sampling.
+    :size: sampling size. If not informed, a sampling size will be calculated
+        using Cochran adjusted sampling formula:
+        cochran_n = (Z**2 * p * q) /e**2
+        where:
+            - Z is the z-value. In this case we use 1.96 representing 95%
+            - p is the estimated proportion of the population which has an
+                attribute. In this case we use 0.5
+            - q is 1-p
+            - e is the margin of error
+        This formula is adjusted as follows:
+        adjusted_cochran = cochran_n / 1+((cochran_n -1)/N)
+        where:
+            - cochran_n = result of the previous formula
+            - N is the population size
+    :seed: sampling seed
+    :keep_index: if True, it keeps a column with the original population index indicator
+    
+    Returns
+    -------
+    A sampled pandas dataframe based in a set of strata.
+    Examples
+    --------
+    >> df.head()
+    	id  sex age city 
+    0	123 M   20  XYZ
+    1	456 M   25  XYZ
+    2	789 M   21  YZX
+    3	987 F   40  ZXY
+    4	654 M   45  ZXY
+    ...
+    # This returns a sample stratified by sex and city containing 30% of the size of
+    # the original data
+    >> stratified = stratified_sample(df=df, strata=['sex', 'city'], size=0.3)
+    Requirements
+    ------------
+    - pandas
+    - numpy
+    '''
+    population = len(df)
+    size = __smpl_size(population, size)
+    tmp = df[strata]
+    tmp['size'] = 1
+    tmp_grpd = tmp.groupby(strata).count().reset_index()
+    tmp_grpd['samp_size'] = round(size/population * tmp_grpd['size']).astype(int)
+
+    # controlling variable to create the dataframe or append to it
+    first = True 
+    for i in range(len(tmp_grpd)):
+        # query generator for each iteration
+        qry=''
+        for s in range(len(strata)):
+            stratum = strata[s]
+            value = tmp_grpd.iloc[i][stratum]
+            n = tmp_grpd.iloc[i]['samp_size']
+
+            if type(value) == str:
+                value = "'" + str(value) + "'"
+            
+            if s != len(strata)-1:
+                qry = qry + stratum + ' == ' + str(value) +' & '
+            else:
+                qry = qry + stratum + ' == ' + str(value)
+        
+        # final dataframe
+        if first:
+            stratified_df = df.query(qry).sample(n=n, random_state=seed).reset_index(drop=(not keep_index))
+            first = False
+        else:
+            tmp_df = df.query(qry).sample(n=n, random_state=seed).reset_index(drop=(not keep_index))
+            stratified_df = stratified_df.append(tmp_df, ignore_index=True)
+    
+    return stratified_df
+
+
+def stratified_sample_report(df, strata, size=None):
+    '''
+    source: https://www.kaggle.com/flaviobossolan/stratified-sampling-python
+    Generates a dataframe reporting the counts in each stratum and the counts
+    for the final sampled dataframe.
+    Parameters
+    ----------
+    :df: pandas dataframe from which data will be sampled.
+    :strata: list containing columns that will be used in the stratified sampling.
+    :size: sampling size. If not informed, a sampling size will be calculated
+        using Cochran adjusted sampling formula:
+        cochran_n = (Z**2 * p * q) /e**2
+        where:
+            - Z is the z-value. In this case we use 1.96 representing 95%
+            - p is the estimated proportion of the population which has an
+                attribute. In this case we use 0.5
+            - q is 1-p
+            - e is the margin of error
+        This formula is adjusted as follows:
+        adjusted_cochran = cochran_n / 1+((cochran_n -1)/N)
+        where:
+            - cochran_n = result of the previous formula
+            - N is the population size
+    Returns
+    -------
+    A dataframe reporting the counts in each stratum and the counts
+    for the final sampled dataframe.
+    '''
+    population = len(df)
+    size = __smpl_size(population, size)
+    tmp = df[strata]
+    tmp['size'] = 1
+    tmp_grpd = tmp.groupby(strata).count().reset_index()
+    tmp_grpd['samp_size'] = round(size/population * tmp_grpd['size']).astype(int)
+    return tmp_grpd
+
+
+def __smpl_size(population, size):
+    '''
+    source: https://www.kaggle.com/flaviobossolan/stratified-sampling-python
+    A function to compute the sample size. If not informed, a sampling 
+    size will be calculated using Cochran adjusted sampling formula:
+        cochran_n = (Z**2 * p * q) /e**2
+        where:
+            - Z is the z-value. In this case we use 1.96 representing 95%
+            - p is the estimated proportion of the population which has an
+                attribute. In this case we use 0.5
+            - q is 1-p
+            - e is the margin of error
+        This formula is adjusted as follows:
+        adjusted_cochran = cochran_n / 1+((cochran_n -1)/N)
+        where:
+            - cochran_n = result of the previous formula
+            - N is the population size
+    Parameters
+    ----------
+        :population: population size
+        :size: sample size (default = None)
+    Returns
+    -------
+    Calculated sample size to be used in the functions:
+        - stratified_sample
+        - stratified_sample_report
+    '''
+    if size is None:
+        cochran_n = round(((1.96)**2 * 0.5 * 0.5)/ 0.02**2)
+        n = round(cochran_n/(1+((cochran_n -1) /population)))
+    elif size >= 0 and size < 1:
+        n = round(population * size)
+    elif size < 0:
+        raise ValueError('Parameter "size" must be an integer or a proportion between 0 and 0.99.')
+    elif size >= 1:
+        n = size
+    return n
